@@ -1,6 +1,6 @@
 # Camel API
 
-Este projeto é uma API do sistema da Loja Virtual da Camel, para atendimento a clientes, utilizando node (v18.17.0) com JavaScript Vanilla, Express e PostgreSQL.
+Este projeto é uma API do sistema da Loja Virtual da Camel, para atendimento a clientes, utilizando node (v18.17.0) com JavaScript Vanilla, Express e PostgreSQL.a
 
 ## Recursos
 

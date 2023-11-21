@@ -10,6 +10,8 @@ import './config/db.js'
 import routes from './api/index.js'
 import exceptionHandler from './middlewares/errors-handlers.js'
 
+import logger from './middlewares/logger.js'
+
 const app = express()
 
 // Use Cors
@@ -26,6 +28,9 @@ app.use(morgan('dev'))
 
 // Use Body Parser JSON Middleware
 app.use(express.json())
+
+// Usar Logger.js
+app.use(logger)
 
 // Initiate Request Locals Object
 app.use((request, _response, next) => {

@@ -21,7 +21,7 @@ jobs:
         run: npm install
 
       - name: Install Cypress
-        run: npm install Cypress
+        run: npm install cypress
 
       - name: Run Lint
         run: npm run lint

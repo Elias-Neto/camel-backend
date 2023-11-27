@@ -3,6 +3,11 @@ import { DataTypes } from 'sequelize'
 import sequelize from '../../config/sequelize.js'
 
 const usersModel = sequelize.define('users', {
+  id: {
+    type: DataTypes.UUID,
+    defaultValue: DataTypes.UUIDV4,
+    primaryKey: true,
+  },
   name: {
     type: DataTypes.STRING(100),
     required: true,

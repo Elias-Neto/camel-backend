@@ -4,7 +4,7 @@ import { sign } from 'jsonwebtoken'
 import AppError from '../../utils/AppError.js'
 import HttpStatus from '../../types/global.enums.js'
 import { findUserByEmail } from '../users/users.dao.js'
-import { isNullOrUndefined } from '../../helpers/object-helper'
+import { isNullOrUndefined } from '../../helpers/object-helper.js'
 
 const createSession = async (request, response) => {
   const { email, password } = request.body

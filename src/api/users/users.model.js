@@ -26,14 +26,14 @@ const usersModel = sequelize.define('users', {
   },
   cpf: {
     type: DataTypes.STRING(11),
-    required: true,
-    allowNull: false,
+    required: false,
+    allowNull: true,
     unique: true,
   },
   phone: {
     type: DataTypes.STRING(11),
-    required: true,
-    allowNull: false,
+    required: false,
+    allowNull: true,
     unique: true,
   },
 })

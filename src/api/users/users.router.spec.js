@@ -21,8 +21,6 @@ describe('[POST] - /users', () => {
       name: 'Izabela Cristina',
       email: 'izabela.cristina@example.com',
       password: 'senha123',
-      cpf: '81991039008',
-      phone: '32165498758',
     })
 
     expect(response.status).toBe(201)
@@ -43,8 +41,6 @@ describe('[POST] - /users', () => {
       name: 'Izabela Cristina',
       email: 'izabela.cristina@example.com',
       password: 'senha123',
-      cpf: '81991039008',
-      phone: '32165498758',
     })
 
     expect(response.status).toBe(409)
@@ -60,8 +56,6 @@ describe('[POST] - /users', () => {
       name: 'Maria José',
       email: 'maria.jose@example.com',
       password: 'senha321',
-      cpf: '32165498725',
-      phone: '83973254113',
     })
 
     expect(response.status).toBe(500)

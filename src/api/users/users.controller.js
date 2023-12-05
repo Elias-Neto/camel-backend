@@ -10,7 +10,14 @@ const createUser = async (request, response) => {
   const { body } = request
 
   try {
-    const user = await insertUser(body)
+    const checkPassword = body.password === body.confirmedPassword
+
+    if (!checkPassword) {
+      throw new AppError(
+        HttpStatus[400].statusCode,
+        'As senhas devem ser iguais.',
+      )
+    }
 
     const passwordHash = await hash(body.password, 8)
 

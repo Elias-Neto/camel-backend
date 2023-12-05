@@ -37,10 +37,18 @@ describe('[POST] - /users', () => {
   })
 
   it('should return 409 when user already exists', async () => {
+  it('should return 400 when passwords do not match', async () => {
     const response = await request(app).post('/users').send({
       name: 'Izabela Cristina',
       email: 'izabela.cristina@example.com',
       password: 'senha123',
+      confirmedPassword: 'invalid_password',
+    })
+
+    expect(response.status).toBe(400)
+    expect(response.body.message).toBe('As senhas devem ser iguais.')
+  })
+
     })
 
     expect(response.status).toBe(409)

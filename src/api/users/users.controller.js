@@ -1,3 +1,6 @@
+import bcrypt from 'bcryptjs'
+const { hash } = bcrypt
+
 import { insertUser } from './users.dao.js'
 
 import AppError from '../../utils/AppError.js'
@@ -8,6 +11,10 @@ const createUser = async (request, response) => {
 
   try {
     const user = await insertUser(body)
+
+    const passwordHash = await hash(body.password, 8)
+
+    const user = await insertUser({ ...body, password: passwordHash })
 
     return response.status(201).json(user)
   } catch (error) {

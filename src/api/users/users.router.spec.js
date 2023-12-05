@@ -21,7 +21,7 @@ describe('[POST] - /users', () => {
       name: 'Izabela Cristina',
       email: 'izabela.cristina@example.com',
       password: 'senha123',
-      confirmedPassword: 'senha1234',
+      confirmedPassword: 'senha123',
     })
 
     expect(response.status).toBe(201)
@@ -68,7 +68,7 @@ describe('[POST] - /users', () => {
   it('should return 400 when passwords do not match', async () => {
     const response = await request(app).post('/users').send({
       name: 'Izabela Cristina',
-      email: 'izabela.cristina@example.com',
+      email: 'iza@example.com',
       password: 'senha123',
       confirmedPassword: 'invalid_password',
     })
@@ -98,6 +98,7 @@ describe('[POST] - /users', () => {
       name: 'Maria José',
       email: 'maria.jose@example.com',
       password: 'senha321',
+      confirmedPassword: 'senha321',
     })
 
     expect(response.status).toBe(500)

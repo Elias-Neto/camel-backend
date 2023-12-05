@@ -1,10 +1,15 @@
 import { compare } from 'bcryptjs'
 import { sign } from 'jsonwebtoken'
+import bcrypt from 'bcryptjs'
+import jwt from 'jsonwebtoken'
 
 import AppError from '../../utils/AppError.js'
 import HttpStatus from '../../types/global.enums.js'
 import { findUserByEmail } from '../users/users.dao.js'
 import { isNullOrUndefined } from '../../helpers/object-helper.js'
+
+const { sign } = jwt
+const { compare } = bcrypt
 
 const createSession = async (request, response) => {
   const { email, password } = request.body
@@ -20,6 +25,7 @@ const createSession = async (request, response) => {
     const passwordMatched = await compare(password, user.password)
     if (!passwordMatched) {
       throw new AppError(HttpStatus[401].statusCode, HttpStatus[401].message)
+      throw new AppError(HttpStatus[401].statusCode, 'Senha inválida.')
     }
 
     // Generate JWT

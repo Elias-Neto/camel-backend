@@ -36,6 +36,16 @@ describe('[POST] - /sessions', () => {
     expect(response.body).toHaveProperty('message', expect.any(String))
   })
 
+  it('should return 401 when password is incorrect', async () => {
+    const response = await request(app).post('/sessions').send({
+      email: 'joao.silva@example.com',
+      password: 'wrong_password',
+    })
+
+    expect(response.status).toBe(401)
+    expect(response.body).toHaveProperty('message', 'Senha inválida.')
+  })
+
   it('should return 404 when user does not exist', async () => {
     const response = await request(app).post('/sessions').send({
       email: 'nobody@example.com',

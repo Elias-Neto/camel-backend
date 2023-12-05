@@ -53,7 +53,7 @@ describe('[POST] - /sessions', () => {
     })
 
     expect(response.status).toBe(404)
-    expect(response.body).toHaveProperty('message', expect.any(String))
+    expect(response.body).toHaveProperty('message', 'Email não cadastrado.')
   })
 
   it('should return 500 when unexpected error ocurred', async () => {

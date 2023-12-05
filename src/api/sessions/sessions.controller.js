@@ -1,5 +1,3 @@
-import { compare } from 'bcryptjs'
-import { sign } from 'jsonwebtoken'
 import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
 
@@ -18,13 +16,12 @@ const createSession = async (request, response) => {
     // Check if user exists in database by email
     const user = await findUserByEmail(email)
     if (isNullOrUndefined(user)) {
-      throw new AppError(HttpStatus[404].statusCode, HttpStatus[404].message)
+      throw new AppError(HttpStatus[404].statusCode, 'Email não cadastrado.')
     }
 
     // Check if password is correct
     const passwordMatched = await compare(password, user.password)
     if (!passwordMatched) {
-      throw new AppError(HttpStatus[401].statusCode, HttpStatus[401].message)
       throw new AppError(HttpStatus[401].statusCode, 'Senha inválida.')
     }
 

@@ -28,7 +28,7 @@ const validateUniqueUser = async (request, _response, next) => {
   const users = await findUserByEmail(email)
 
   if (isDefined(users)) {
-    throw new AppError(HttpStatus[409].statusCode, HttpStatus[409].message)
+    throw new AppError(HttpStatus[409].statusCode, 'Email já cadastrado.')
   }
   next()
 }

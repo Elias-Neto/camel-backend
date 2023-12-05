@@ -21,6 +21,7 @@ describe('[POST] - /users', () => {
       name: 'Izabela Cristina',
       email: 'izabela.cristina@example.com',
       password: 'senha123',
+      confirmedPassword: 'senha1234',
     })
 
     expect(response.status).toBe(201)
@@ -36,7 +37,6 @@ describe('[POST] - /users', () => {
     expect(response.body).toHaveProperty('message', expect.any(String))
   })
 
-  it('should return 409 when user already exists', async () => {
   it('should return 400 when the password is less than 6 characters', async () => {
     const response = await request(app).post('/users').send({
       name: 'Izabela Cristina',
@@ -77,10 +77,16 @@ describe('[POST] - /users', () => {
     expect(response.body.message).toBe('As senhas devem ser iguais.')
   })
 
+  it('should return 409 when user already exists', async () => {
+    const response = await request(app).post('/users').send({
+      name: 'João Silva Costa',
+      email: 'joao.silva@example.com',
+      password: 'senha123',
+      confirmedPassword: 'senha123',
     })
 
     expect(response.status).toBe(409)
-    expect(response.body).toHaveProperty('message', expect.any(String))
+    expect(response.body).toHaveProperty('message', 'Email já cadastrado.')
   })
 
   it('should return 500 when unexpected error ocurred', async () => {

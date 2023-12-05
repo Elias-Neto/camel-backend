@@ -37,6 +37,34 @@ describe('[POST] - /users', () => {
   })
 
   it('should return 409 when user already exists', async () => {
+  it('should return 400 when the password is less than 6 characters', async () => {
+    const response = await request(app).post('/users').send({
+      name: 'Izabela Cristina',
+      email: 'izabela.cristina@example.com',
+      password: '12345',
+      confirmedPassword: '12345',
+    })
+
+    expect(response.status).toBe(400)
+    expect(response.body.details[0].message).toBe(
+      'A senha deve ter no mínimo 6 caracteres e conter letras e números.',
+    )
+  })
+
+  it('should return 400 when the password does not contain letters and numbers', async () => {
+    const response = await request(app).post('/users').send({
+      name: 'Izabela Cristina',
+      email: 'izabela.cristina@example.com',
+      password: '123456',
+      confirmedPassword: '123456',
+    })
+
+    expect(response.status).toBe(400)
+    expect(response.body.details[0].message).toBe(
+      'A senha deve ter no mínimo 6 caracteres e conter letras e números.',
+    )
+  })
+
   it('should return 400 when passwords do not match', async () => {
     const response = await request(app).post('/users').send({
       name: 'Izabela Cristina',

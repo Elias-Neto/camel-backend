@@ -10,6 +10,13 @@ const validateCreateUserSchema = celebrate({
   [Segments.BODY]: {
     name: Joi.string().required(),
     email: Joi.string().email().required(),
+    password: Joi.string()
+      .required()
+      .pattern(new RegExp('^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]+$'))
+      .message(
+        'A senha deve ter no mínimo 6 caracteres e conter letras e números.',
+      ),
+    confirmedPassword: Joi.string().required(),
   },
 })
 

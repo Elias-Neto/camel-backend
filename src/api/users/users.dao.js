@@ -1,5 +1,9 @@
 import usersModel from './users.model.js'
 
+const insertUser = async userData => {
+  return await usersModel.create(userData)
+}
+
 const findUserByEmail = async email => {
   return await usersModel.findOne({
     where: {
@@ -9,4 +13,4 @@ const findUserByEmail = async email => {
   })
 }
 
-export { findUserByEmail }
+export { insertUser, findUserByEmail }

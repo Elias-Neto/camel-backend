@@ -1,6 +1,6 @@
 [
   {
-    "id": 1,
+    "id": "b7ce969d-f59d-4df9-8f98-cb2e171aef85",
     "name": "João Silva",
     "email": "joao.silva@example.com",
     "password": "$2a$12$a50taWcB9FSZIx6/fu9Itu9B66A5PWKv5711PQol2SHW5hLA0kj1K",
@@ -9,7 +9,7 @@
     "deletedAt": null
   },
   {
-    "id": 2,
+    "id": "f8b84404-201c-4521-a29b-6ec930aaa945",
     "name": "Maria Oliveira",
     "email": "maria.oliveira@example.com",
     "password": "$2a$12$rGJi5IHge5C76k8fCI66y.gTlX.DffZu2HHqnR.iZ/m5S5Ql/Fjtm",

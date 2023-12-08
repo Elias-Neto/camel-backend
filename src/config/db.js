@@ -25,9 +25,12 @@ async function connectToDatabase() {
   try {
     sequelize.authenticate()
     sequelize.sync({ force: envIsDevelopment })
+    // eslint-disable-next-line
     console.log('✅ Database connected!')
   } catch (error) {
+    // eslint-disable-next-line
     console.log('❌ Database not connected!')
+    // eslint-disable-next-line
     console.log(error)
   }
 }

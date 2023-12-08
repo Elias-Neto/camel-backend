@@ -25,7 +25,6 @@ describe('[POST] - /users', () => {
     })
 
     expect(response.status).toBe(201)
-    expect(response.body).toHaveProperty('id')
   })
 
   it('should return 400 when invalid request body', async () => {
@@ -41,13 +40,13 @@ describe('[POST] - /users', () => {
     const response = await request(app).post('/users').send({
       name: 'Izabela Cristina',
       email: 'izabela.cristina@example.com',
-      password: '12345',
-      confirmedPassword: '12345',
+      password: 'ab45',
+      confirmedPassword: 'ab45',
     })
 
     expect(response.status).toBe(400)
     expect(response.body.details[0].message).toBe(
-      'A senha deve ter no mínimo 6 caracteres e conter letras e números.',
+      'A senha deve ter mais de 6 caracteres e conter letras e números.',
     )
   })
 
@@ -61,7 +60,7 @@ describe('[POST] - /users', () => {
 
     expect(response.status).toBe(400)
     expect(response.body.details[0].message).toBe(
-      'A senha deve ter no mínimo 6 caracteres e conter letras e números.',
+      'A senha deve ter mais de 6 caracteres e conter letras e números.',
     )
   })
 

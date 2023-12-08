@@ -12,9 +12,9 @@ const validateCreateUserSchema = celebrate({
     email: Joi.string().email().required(),
     password: Joi.string()
       .required()
-      .pattern(new RegExp('^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]+$'))
+      .pattern(new RegExp(/^(?=.*\d)(?=.*[a-zA-Z]).{6,}$/))
       .message(
-        'A senha deve ter no mínimo 6 caracteres e conter letras e números.',
+        'A senha deve ter mais de 6 caracteres e conter letras e números.',
       ),
     confirmedPassword: Joi.string().required(),
   },

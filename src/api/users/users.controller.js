@@ -21,9 +21,9 @@ const createUser = async (request, response) => {
 
     const passwordHash = await hash(body.password, 8)
 
-    const user = await insertUser({ ...body, password: passwordHash })
+    await insertUser({ ...body, password: passwordHash })
 
-    return response.status(201).json(user)
+    return response.status(201).json()
   } catch (error) {
     if (error instanceof AppError) {
       throw response.status(error.statusCode).json({

@@ -6,6 +6,8 @@ import { insertUser } from './users.dao.js'
 import AppError from '../../utils/AppError.js'
 import HttpStatus from '../../types/global.enums.js'
 
+import { api as n8nWebHook } from '../../service/n8n.js'
+
 const createUser = async (request, response) => {
   const { body } = request
 
@@ -21,7 +23,9 @@ const createUser = async (request, response) => {
 
     const passwordHash = await hash(body.password, 8)
 
-    await insertUser({ ...body, password: passwordHash })
+    const user = await insertUser({ ...body, password: passwordHash })
+
+    await n8nWebHook.post('/', { name: user.name, email: user.email })
 
     return response.status(201).json()
   } catch (error) {

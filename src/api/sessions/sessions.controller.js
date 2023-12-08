@@ -16,13 +16,13 @@ const createSession = async (request, response) => {
     // Check if user exists in database by email
     const user = await findUserByEmail(email)
     if (isNullOrUndefined(user)) {
-      throw new AppError(HttpStatus[404].statusCode, 'Email não cadastrado.')
+      throw new AppError(HttpStatus[404].statusCode, 'Credenciais inválidas.')
     }
 
     // Check if password is correct
     const passwordMatched = await compare(password, user.password)
     if (!passwordMatched) {
-      throw new AppError(HttpStatus[401].statusCode, 'Senha inválida.')
+      throw new AppError(HttpStatus[401].statusCode, 'Credenciais inválidas.')
     }
 
     // Generate JWT

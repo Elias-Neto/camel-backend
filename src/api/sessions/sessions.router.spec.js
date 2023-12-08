@@ -43,7 +43,7 @@ describe('[POST] - /sessions', () => {
     })
 
     expect(response.status).toBe(401)
-    expect(response.body).toHaveProperty('message', 'Senha inválida.')
+    expect(response.body).toHaveProperty('message', 'Credenciais inválidas.')
   })
 
   it('should return 404 when user does not exist', async () => {
@@ -53,7 +53,7 @@ describe('[POST] - /sessions', () => {
     })
 
     expect(response.status).toBe(404)
-    expect(response.body).toHaveProperty('message', 'Email não cadastrado.')
+    expect(response.body).toHaveProperty('message', 'Credenciais inválidas.')
   })
 
   it('should return 500 when unexpected error ocurred', async () => {

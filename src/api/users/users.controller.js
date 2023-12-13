@@ -1,7 +1,7 @@
 import bcrypt from 'bcryptjs'
 const { hash } = bcrypt
 
-import { insertUser } from './users.dao.js'
+import { insertUser, findAllUsers } from './users.dao.js'
 
 import AppError from '../../utils/AppError.js'
 import HttpStatus from '../../types/global.enums.js'
@@ -41,4 +41,22 @@ const createUser = async (request, response) => {
   }
 }
 
-export { createUser }
+const fetchUsers = async (request, response) => {
+  try {
+    const data = await findAllUsers()
+
+    response.status(200).json(data)
+  } catch (error) {
+    if (error instanceof AppError) {
+      throw response.status(error.statusCode).json({
+        message: error.message,
+      })
+    }
+
+    throw response.status(HttpStatus[500].statusCode).json({
+      message: HttpStatus[500].message,
+    })
+  }
+}
+
+export { createUser, fetchUsers }

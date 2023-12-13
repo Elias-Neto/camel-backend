@@ -13,4 +13,12 @@ const findUserByEmail = async email => {
   })
 }
 
-export { insertUser, findUserByEmail }
+const findAllUsers = async () => {
+  return await usersModel.findAll({
+    where: {
+      deletedAt: null,
+    },
+  })
+}
+
+export { insertUser, findUserByEmail, findAllUsers }

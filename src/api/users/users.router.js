@@ -1,6 +1,6 @@
 import { Router } from 'express'
 
-import { createUser } from './users.controller.js'
+import { createUser, fetchUsers } from './users.controller.js'
 
 import {
   validateCreateUserSchema,
@@ -10,5 +10,7 @@ import {
 const router = Router()
 
 router.post('/', [validateCreateUserSchema, validateUniqueUser, createUser])
+
+router.get('/', [fetchUsers])
 
 export default router

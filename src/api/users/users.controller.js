@@ -1,7 +1,7 @@
 import bcrypt from 'bcryptjs'
 const { hash } = bcrypt
 
-import { insertUser, findAllUsers } from './users.dao.js'
+import { insertUser, findAllUsers, deleteUser } from './users.dao.js'
 
 import AppError from '../../utils/AppError.js'
 import HttpStatus from '../../types/global.enums.js'
@@ -59,4 +59,26 @@ const fetchUsers = async (request, response) => {
   }
 }
 
-export { createUser, fetchUsers }
+const removeUser = async (request, response) => {
+  const { params } = request
+
+  try {
+    const { userID } = params
+
+    await deleteUser(userID)
+
+    response.status(204).end()
+  } catch (error) {
+    if (error instanceof AppError) {
+      throw response.status(error.statusCode).json({
+        message: error.message,
+      })
+    }
+
+    throw response.status(HttpStatus[500].statusCode).json({
+      message: HttpStatus[500].message,
+    })
+  }
+}
+
+export { createUser, fetchUsers, removeUser }

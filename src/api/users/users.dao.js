@@ -21,4 +21,13 @@ const findAllUsers = async () => {
   })
 }
 
-export { insertUser, findUserByEmail, findAllUsers }
+const deleteUser = async userID => {
+  return await usersModel.destroy({
+    where: {
+      id: userID,
+      deletedAt: null,
+    },
+  })
+}
+
+export { insertUser, findUserByEmail, deleteUser, findAllUsers }

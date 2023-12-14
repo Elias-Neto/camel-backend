@@ -1,10 +1,14 @@
 import { celebrate, Joi, Segments } from 'celebrate'
 
-import { findUserByEmail } from './users.dao.js'
+import { findUserByEmail, findUserByID } from './users.dao.js'
 
 import AppError from '../../utils/AppError.js'
 import HttpStatus from '../../types/global.enums.js'
-import { isDefined } from '../../helpers/object-helper.js'
+import { isDefined, isNullOrUndefined } from '../../helpers/object-helper.js'
+
+const paramsBaseSchema = {
+  userID: Joi.number().required(),
+}
 
 const validateCreateUserSchema = celebrate({
   [Segments.BODY]: {
@@ -20,6 +24,10 @@ const validateCreateUserSchema = celebrate({
   },
 })
 
+const validateRemoveUser = celebrate({
+  [Segments.PARAMS]: paramsBaseSchema,
+})
+
 const validateUniqueUser = async (request, _response, next) => {
   const {
     body: { email },
@@ -33,4 +41,25 @@ const validateUniqueUser = async (request, _response, next) => {
   next()
 }
 
-export { validateCreateUserSchema, validateUniqueUser }
+const validateUserExistence = async (request, _response, next) => {
+  const { query, params, body } = request
+
+  const userID = params.userID || query.userID || body.userID
+
+  const user = await findUserByID(userID)
+
+  if (isNullOrUndefined(user)) {
+    throw new AppError(HttpStatus[404].statusCode, HttpStatus[404].message)
+  }
+
+  request.locals.user = user
+
+  next()
+}
+
+export {
+  validateCreateUserSchema,
+  validateUniqueUser,
+  validateUserExistence,
+  validateRemoveUser,
+}

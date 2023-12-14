@@ -4,6 +4,17 @@ const insertUser = async userData => {
   return await usersModel.create(userData)
 }
 
+const updateUser = async (userID, data) => {
+  await usersModel.update(data, {
+    where: {
+      id: userID,
+      deletedAt: null,
+    },
+  })
+
+  return await findUserByID(userID)
+}
+
 const findUserByEmail = async email => {
   return await usersModel.findOne({
     where: {
@@ -39,4 +50,11 @@ const deleteUser = async userID => {
   })
 }
 
-export { insertUser, findUserByEmail, deleteUser, findAllUsers, findUserByID }
+export {
+  insertUser,
+  findUserByEmail,
+  deleteUser,
+  findAllUsers,
+  findUserByID,
+  updateUser,
+}

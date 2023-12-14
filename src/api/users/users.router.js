@@ -1,12 +1,18 @@
 import { Router } from 'express'
 
-import { createUser, fetchUsers, removeUser } from './users.controller.js'
+import {
+  createUser,
+  fetchUsers,
+  removeUser,
+  editUser,
+} from './users.controller.js'
 
 import {
   validateCreateUserSchema,
   validateUniqueUser,
   validateUserExistence,
   validateRemoveUser,
+  validateupdateUserSchema,
 } from './users.middleware.js'
 
 const router = Router()
@@ -20,5 +26,7 @@ router.delete('/:userID', [
   validateUserExistence,
   removeUser,
 ])
+
+router.put('/:userID', [validateupdateUserSchema, validateUniqueUser, editUser])
 
 export default router

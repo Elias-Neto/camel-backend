@@ -24,6 +24,21 @@ const validateCreateUserSchema = celebrate({
   },
 })
 
+const validateupdateUserSchema = celebrate({
+  [Segments.PARAMS]: paramsBaseSchema,
+  [Segments.BODY]: {
+    name: Joi.string().required(),
+    email: Joi.string().email().required(),
+    password: Joi.string()
+      .required()
+      .pattern(new RegExp(/^(?=.*\d)(?=.*[a-zA-Z]).{6,}$/))
+      .message(
+        'A senha deve ter mais de 6 caracteres e conter letras e números.',
+      ),
+    confirmedPassword: Joi.string().required(),
+  },
+})
+
 const validateRemoveUser = celebrate({
   [Segments.PARAMS]: paramsBaseSchema,
 })
@@ -62,4 +77,5 @@ export {
   validateUniqueUser,
   validateUserExistence,
   validateRemoveUser,
+  validateupdateUserSchema,
 }

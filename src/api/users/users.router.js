@@ -12,7 +12,8 @@ import {
   validateUniqueUser,
   validateUserExistence,
   validateRemoveUser,
-  validateupdateUserSchema,
+  validateUpdateUserSchema,
+  validateUniqueUserPUT,
 } from './users.middleware.js'
 
 const router = Router()
@@ -27,6 +28,11 @@ router.delete('/:userID', [
   removeUser,
 ])
 
-router.put('/:userID', [validateupdateUserSchema, validateUniqueUser, editUser])
+router.put('/:userID', [
+  validateUpdateUserSchema,
+  validateUserExistence,
+  validateUniqueUserPUT,
+  editUser,
+])
 
 export default router

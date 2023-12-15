@@ -10,6 +10,12 @@ const sequelize = new Sequelize({
   dialect: process.env.DB_DIALECT || 'postgres',
   storage: process.env.NODE_ENV === 'test' ? ':memory:' : undefined,
   logging: false,
+  dialectOptions: {
+    ssl: process.env.NODE_ENV === 'production' && {
+      require: true,
+      rejectUnauthorized: false,
+    },
+  },
   define: {
     paranoid: true, // Habilita a deleção lógica em todos os modelos
     timestamps: true, // Habilita a criação automática de timestamps (createdAt, updatedAt)

@@ -37,11 +37,11 @@ jobs:
       - name: Install dependencies
         run: npm i install
 
-      - name: Build
+      - name: Run Build
         run: npm run build
 
-      - name: Lint
+      - name: Run Lint
         run: npm run lint
 
-      - name: Test
+      - name: Run Test
         run: npm run test

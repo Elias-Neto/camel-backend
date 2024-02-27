@@ -12,6 +12,11 @@ const categoryModel = sequelize.define('categories', {
     required: true,
     allowNull: false,
   },
+  category_description: {
+    type: DataTypes.STRING(100),
+    required: true,
+    allowNull: false,
+  },
   sub_category_id: {
     type: DataTypes.STRING(100),
     required: true,

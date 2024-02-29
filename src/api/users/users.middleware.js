@@ -24,7 +24,7 @@ const validateCreateUserSchema = celebrate({
   },
 })
 
-const validateUpdateUserSchema = celebrate({
+const validateEditUserSchema = celebrate({
   [Segments.PARAMS]: paramsBaseSchema,
   [Segments.BODY]: {
     name: Joi.string().required(),
@@ -99,6 +99,6 @@ export {
   validateUniqueUser,
   validateUserExistence,
   validateRemoveUser,
-  validateUpdateUserSchema,
+  validateEditUserSchema,
   validateUniqueUserPUT,
 }

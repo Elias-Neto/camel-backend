@@ -12,7 +12,7 @@ import {
   validateUniqueUser,
   validateUserExistence,
   validateRemoveUser,
-  validateUpdateUserSchema,
+  validateEditUserSchema,
   validateUniqueUserPUT,
 } from './users.middleware.js'
 
@@ -29,7 +29,7 @@ router.delete('/:userID', [
 ])
 
 router.put('/:userID', [
-  validateUpdateUserSchema,
+  validateEditUserSchema,
   validateUserExistence,
   validateUniqueUserPUT,
   editUser,

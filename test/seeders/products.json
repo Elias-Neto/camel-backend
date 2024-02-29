@@ -1,0 +1,42 @@
+[
+  {
+    "id": "54ad1e07-e4a3-4b34-a1e3-a07313901487",
+    "name": "Product 1",
+    "price": "50.00",
+    "description": "Description of Product 1",
+    "available": true,
+    "deletedAt": null 
+  },
+  {
+    "id": "3c632086-d6a1-4772-ba19-15905026be9b",
+    "name": "Product 2",
+    "price": "75.99",
+    "description": "Description of Product 2",
+    "available": true,
+    "deletedAt": null 
+  },
+  {
+    "id": "de5d4b20-36f2-4aaf-a47d-e45570158e60",
+    "name": "Product 3",
+    "price": "30.50",
+    "description": "Description of Product 3",
+    "available": true,
+    "deletedAt": null 
+  },
+  {
+    "id": "b06a0c58-02f0-4a8e-be39-9b214b242b25",
+    "name": "Product 4",
+    "price": "120.00",
+    "description": "Description of Product 4",
+    "available": true,
+    "deletedAt": null 
+  },
+  {
+    "id": "16e3797c-b713-4d51-aa4b-d47ea8472c3b",
+    "name": "Product 5",
+    "price": "99.99",
+    "description": "Description of Product 5",
+    "available": false,
+    "deletedAt": null
+  }
+]

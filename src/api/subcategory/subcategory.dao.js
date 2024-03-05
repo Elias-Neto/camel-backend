@@ -1,12 +1,12 @@
 import { Sequelize } from 'sequelize'
 
-import examplesModel from './subcategory.model.js'
+import subcategory from './subcategory.model.js'
 
 import { isDefined } from '../../helpers/object-helper.js'
 import { searchAttributeString } from '../../helpers/query-helper.js'
 
-const insertExample = async data => {
-  return await examplesModel.create(data)
+const insertSubcategory = async data => {
+  return await subcategory.create(data)
 }
 
 const findAndCountExamples = async params => {

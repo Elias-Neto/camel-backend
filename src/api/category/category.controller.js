@@ -34,7 +34,7 @@ const createCategory = async (request, response) => {
   }
 }
 
-const fetchCategory = async (request, response) => {
+const fetchCategories = async (request, response) => {
 
   try {
     if (request.category_name === null || undefined) { 
@@ -58,16 +58,35 @@ const fetchCategory = async (request, response) => {
   }
 }
 
-//Terminar de Construir
+const fetchCategory = async (request, response) => {
+  const { locals } = request
+
+  try {
+    const { category } = locals
+
+    response.status(200).json(category)
+  } catch (error) {
+    if (error instanceof AppError) {
+      throw response.status(error.statusCode).json({
+        message: error.message,
+      })
+    }
+
+    throw response.status(HttpStatus[500].statusCode).json({
+      message: HttpStatus[500].message,
+    })
+  }
+}
+
 const editCategory = async (request, response) => {
   const { params, body } = request
 
   try {
     const { categoryID } = params
 
-    const example = await updateExample(exampleID, body)
+    const category = await updateCategory(categoryID, body)
 
-    response.status(200).json(example)
+    response.status(200).json(category)
   } catch (error) {
     if (error instanceof AppError) {
       throw response.status(error.statusCode).json({
@@ -80,13 +99,13 @@ const editCategory = async (request, response) => {
   }
 }
 
-const removeExample = async (request, response) => {
+const removeCategory = async (request, response) => {
   const { params } = request
 
   try {
-    const { exampleID } = params
+    const { categoryID } = params
 
-    await deleteExample(exampleID)
+    await deleteCategory(categoryID)
 
     response.status(204).end()
   } catch (error) {
@@ -103,9 +122,9 @@ const removeExample = async (request, response) => {
 }
 
 export {
-  createExample,
-  fetchExamples,
-  fetchExample,
-  editExample,
-  removeExample,
+  createCategory,
+  fetchCategories,
+  fetchCategory,
+  editCategory,
+  removeCategory,
 }

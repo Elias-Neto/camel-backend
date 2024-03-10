@@ -7,19 +7,19 @@ const categoryModel = sequelize.define('categories', {
     type: DataTypes.NUMBER,
     primaryKey: true
   },
-  category_type: {
-    type: DataTypes.STRING(50),
-    required: true,
-    allowNull: false
-  },
-  category_name: {
+  name: {
     type: DataTypes.STRING(100),
     required: true,
     allowNull: false,
   },
-  category_description: {
+  description: {
     type: DataTypes.STRING(100),
     allowNull: true,
+  },
+  type: {
+    type: DataTypes.STRING(50),
+    required: true,
+    allowNull: false
   },
   sub_category_id: {
     type: DataTypes.STRING(100),

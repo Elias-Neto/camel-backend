@@ -1,6 +1,7 @@
 import request from 'supertest'
 
 import app from '../../app.js'
+import * as dao from './orders.dao.js'
 import sequelize from '../../config/sequelize.js'
 import { loadSeedData } from '../../../test/utils/index.js'
 
@@ -16,7 +17,7 @@ afterAll(async () => {
   await sequelize.close() // Fecha a conexão com o banco de dados de teste
 })
 
-describe.only('[POST] - /orders', () => {
+describe('[POST] - /orders', () => {
   const requestBody = {
     total: 'R$ 100,00',
     userID: 'b7ce969d-f59d-4df9-8f98-cb2e171aef85',
@@ -31,6 +32,12 @@ describe.only('[POST] - /orders', () => {
       },
     ],
   }
+
+  it('should return 201 when valid request body', async () => {
+    const response = await request(app).post('/orders').send(requestBody)
+
+    expect(response.status).toBe(201)
+  })
 
   it('should return 400 when invalid request body', async () => {
     const response = await request(app).post('/orders').send({
@@ -72,5 +79,15 @@ describe.only('[POST] - /orders', () => {
 
     expect(response.status).toBe(404)
     expect(response.body).toHaveProperty('message', expect.any(String))
+  })
+
+  it('should return 500 when unexpected error ocurred', async () => {
+    jest.spyOn(dao, 'insertOrder').mockImplementationOnce(() => {
+      throw new Error()
+    })
+
+    const response = await request(app).post('/orders').send(requestBody)
+
+    expect(response.status).toBe(500)
   })
 })

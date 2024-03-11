@@ -44,7 +44,7 @@ const findAndCountExamples = async params => {
   }
 }
 
-const findExampleByID = async exampleID => {
+const findSubcategoryByID = async exampleID => {
   return await examplesModel.findOne({
     where: {
       id: exampleID,
@@ -53,7 +53,7 @@ const findExampleByID = async exampleID => {
   })
 }
 
-const findExampleByField1 = async field1 => {
+const findSubcategoryByName = async field1 => {
   return await examplesModel.findOne({
     where: {
       field1,
@@ -62,7 +62,7 @@ const findExampleByField1 = async field1 => {
   })
 }
 
-const updateExample = async (exampleID, data) => {
+const updateSubcategory = async (exampleID, data) => {
   await examplesModel.update(data, {
     where: {
       id: exampleID,
@@ -73,7 +73,7 @@ const updateExample = async (exampleID, data) => {
   return await findExampleByID(exampleID)
 }
 
-const deleteExample = async exampleID => {
+const deleteSubcategory = async exampleID => {
   return await examplesModel.destroy({
     where: {
       id: exampleID,
@@ -83,10 +83,9 @@ const deleteExample = async exampleID => {
 }
 
 export {
-  insertExample,
-  findAndCountExamples,
-  findExampleByID,
-  findExampleByField1,
-  updateExample,
-  deleteExample,
+  insertSubcategory,
+  findSubcategoryByID,
+  findSubcategoryByName,
+  updateSubcategory,
+  deleteSubcategory,
 }

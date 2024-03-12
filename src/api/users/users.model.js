@@ -17,7 +17,7 @@ const usersModel = sequelize.define('users', {
     type: DataTypes.STRING(100),
     required: true,
     allowNull: false,
-    unique: false,
+    unique: true,
   },
   password: {
     type: DataTypes.STRING(100),

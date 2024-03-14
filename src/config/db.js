@@ -1,7 +1,5 @@
 import sequelize from './sequelize.js'
 
-const envIsDevelopment = process.env.NODE_ENV === 'development'
-
 // Models
 
 import usersModel from '../api/users/users.model.js'
@@ -40,7 +38,6 @@ ordersProductModel.belongsToMany(ordersModel, {
 async function connectToDatabase() {
   try {
     sequelize.authenticate()
-    sequelize.sync({ force: envIsDevelopment })
     // eslint-disable-next-line
     console.log('✅ Database connected!')
   } catch (error) {

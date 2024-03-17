@@ -3,6 +3,7 @@ import { Router } from 'express'
 import {
   createCategory,
   fetchCategories,
+  fetchCategory,
   removeCategory,
   editCategory,
 } from './category.controller.js'
@@ -18,9 +19,15 @@ import {
 
 const router = Router()
 
-router.post('/', [validateCreateCategorySchema, validateUniqueCategory, createCategory])
+router.post('/', [
+  validateCreateCategorySchema,
+  validateUniqueCategory,
+  createCategory,
+])
 
 router.get('/', [fetchCategories])
+
+router.get('/:categoryID', [fetchCategory])
 
 router.delete('/:categoryID', [
   validateRemoveCategory,

@@ -1,6 +1,6 @@
 import { celebrate, Joi, Segments } from 'celebrate'
 
-import { findCategoryByID, findCategoryByName, findUserByID } from './category.dao.js'
+import { findCategoryByID, findCategoryByName } from './category.dao.js'
 
 import AppError from '../../utils/AppError.js'
 import HttpStatus from '../../types/global.enums.js'
@@ -15,10 +15,6 @@ const validateCreateCategorySchema = celebrate({
     name: Joi.string().required(),
     description: Joi.string(),
     type: Joi.string(),
-    sub_category_id: Joi.number().required()
-      .message(
-        'Uma sub-categoria deve ser fornecida',
-      ),
   },
 })
 
@@ -28,7 +24,6 @@ const validateUpdateCategorySchema = celebrate({
     name: Joi.string(),
     description: Joi.string(),
     type: Joi.string(),
-    sub_category_id: Joi.number().required(),
   },
 })
 
@@ -55,9 +50,7 @@ const validateUniqueCategoryPUT = async (request, _response, next) => {
     body: { name },
     params: { categoryID },
   } = request
-
-  const categoryByID = await findCategoryrByID(categoryID)
-
+  const categoryByID = await findCategoryByID(categoryID)
   const checkNameEquality = categoryByID.name === name
 
   if (!checkNameEquality) {
@@ -75,9 +68,7 @@ const validateCategoryExistence = async (request, _response, next) => {
   const { query, params, body } = request
 
   const categoryID = params.categoryID || query.categoryID || body.categoryID
-
   const category = await findCategoryByID(categoryID)
-
   if (isNullOrUndefined(category)) {
     throw new AppError(HttpStatus[404].statusCode, HttpStatus[404].message)
   }

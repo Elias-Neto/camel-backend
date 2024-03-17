@@ -3,21 +3,18 @@
       "name": "parafuso",
       "description": "Parafuso de cabeça grande",
       "type": "produto",
-      "sub_category_id": 1,
       "deletedAt": null 
     },
     {
         "name": "rosca",
         "description": "rocsa gente boa",
         "type": "produto",
-        "sub_category_id": 9,
         "deletedAt": null 
     },
     {
         "name": "lanterna",
         "description": "Lanterna que alumeia tudo",
         "type": "produto",
-        "sub_category_id": 3,
         "deletedAt": null 
     }
   ]

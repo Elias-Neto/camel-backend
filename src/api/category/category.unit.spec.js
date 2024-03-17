@@ -1,4 +1,4 @@
-import { findUserByEmail } from './users.dao.js'
+import { findCategoryByName } from './category.dao.js'
 import sequelize from '../../config/sequelize.js'
 import { loadSeedData } from '../../../test/utils/index.js'
 
@@ -15,7 +15,7 @@ afterAll(async () => {
 describe('[DAO] findCategoryByName', () => {
   it('should return category when category exists', async () => {
     const name = 'parafuso'
-    const response = await findUserByEmail(name)
+    const response = await findCategoryByName(name)
 
     expect(response).toBeDefined()
     expect(response.name).toBe(name)
@@ -23,7 +23,7 @@ describe('[DAO] findCategoryByName', () => {
 
   it('should return undefined when category does not exist', async () => {
     const name = 'invalid_name'
-    const response = await findUserByEmail(name)
+    const response = await findCategoryByName(name)
 
     expect(response).toBeNull()
   })

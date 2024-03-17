@@ -5,7 +5,6 @@ import examplesRouter from './examples/examples.router.js'
 import sessionsRouter from './sessions/sessions.router.js'
 import categoryRouter from './category/category.router.js'
 import productsRouter from './products/products.router.js'
-import categoryRouter from './category/category.router.js'
 
 const router = Router()
 

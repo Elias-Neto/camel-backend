@@ -1,4 +1,3 @@
-import { Op } from 'sequelize'
 import categoryModel from './category.model.js'
 
 const insertCategory = async data => {
@@ -8,38 +7,43 @@ const insertCategory = async data => {
 const updateCategory = async (categoryID, data) => {
   await categoryModel.update(data, {
     where: {
-      category_id: categoryID,
-      deleteAt: null,
+      id: categoryID,
+      deletedAt: null,
     },
   })
+}
 
-  return await findCategoryByID(categoryID)
+const findAllCategory = async () => {
+  return await categoryModel.findAll({
+    where: {
+      deletedAt: null,
+    },
+  })
 }
 
 const findCategoryByID = async categoryID => {
   return await categoryModel.findOne({
     where: {
-      category_id: categoryID,
-      deleteAt: null,
+      id: categoryID,
+      deletedAt: null,
     },
   })
 }
 
-const findCategoryByName = async categoryNM => {
-  return await categoryModel.findAll({
+const findCategoryByName = async name => {
+  return await categoryModel.findOne({
     where: {
-      category_name: {
-        [Op.like] : `%${categoryNM}%`
-      } 
-    }
+      name: name,
+      deletedAt: null,
+    },
   })
 }
 
-const deleteCategory = async categoryID => {
+const deleteCategory = async category_id => {
   return await categoryModel.destroy({
     where: {
-      category_id: categoryID,
-      deleteAt: null,
+      id: category_id,
+      deletedAt: null,
     },
   })
 }
@@ -47,7 +51,8 @@ const deleteCategory = async categoryID => {
 export {
   insertCategory,
   updateCategory,
+  findAllCategory,
   findCategoryByID,
   findCategoryByName,
-  deleteCategory
+  deleteCategory,
 }

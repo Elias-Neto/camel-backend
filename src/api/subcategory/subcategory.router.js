@@ -1,49 +1,45 @@
 import { Router } from 'express'
 
 import {
-  createExample,
-  fetchExamples,
-  fetchExample,
-  editExample,
-  removeExample,
-} from './examples.controller.js'
+  createSubcategory,
+  fetchSubcategories,
+  fetchSubcategory,
+  removeSubcategory,
+  editSubcategory
+} from './subcategory.controller.js'
+
 import {
-  validateCreateExampleSchema,
-  validateFetchExamplesSchema,
-  validateFetchExampleSchema,
-  validateEditExampleSchema,
-  validateRemoveExampleSchema,
-  validateUniqueExample,
-  validateExampleExistence,
+  validateCreateSubcategorySchema,
+  validateUniqueSubcategory,
+  validateSubcategoryExistence,
+  validateRemoveSubcategory,
+  validateUpdateSubcategorySchema,
+  validateUniqueSubcategoryPUT
 } from './subcategory.middleware.js'
 
 const router = Router()
 
 router.post('/', [
-  validateCreateExampleSchema,
-  validateUniqueExample,
-  createExample,
+  validateCreateSubcategorySchema,
+  validateUniqueSubcategory,
+  createSubcategory,
 ])
 
-router.get('/', [validateFetchExamplesSchema, fetchExamples])
+router.get('/', [fetchSubcategories])
 
-router.get('/:exampleID', [
-  validateFetchExampleSchema,
-  validateExampleExistence,
-  fetchExample,
+router.get('/:subcategoryID', [fetchSubcategory])
+
+router.delete('/:subcategoryID', [
+  validateRemoveSubcategory,
+  validateSubcategoryExistence,
+  removeSubcategory,
 ])
 
-router.put('/:exampleID', [
-  validateEditExampleSchema,
-  validateExampleExistence,
-  validateUniqueExample,
-  editExample,
-])
-
-router.delete('/:exampleID', [
-  validateRemoveExampleSchema,
-  validateExampleExistence,
-  removeExample,
+router.put('/:subcategoryID', [
+  validateUpdateSubcategorySchema,
+  validateSubcategoryExistence,
+  validateUniqueSubcategoryPUT,
+  editSubcategory,
 ])
 
 export default router

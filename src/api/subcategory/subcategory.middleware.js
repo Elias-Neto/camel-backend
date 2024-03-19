@@ -1,82 +1,90 @@
 import { celebrate, Joi, Segments } from 'celebrate'
 
-import { findExampleByField1, findExampleByID } from './subcategory.dao.js'
+import { findSubcategoryByID, findSubcategoryByName } from './subcategory.dao.js'
 
 import AppError from '../../utils/AppError.js'
 import HttpStatus from '../../types/global.enums.js'
-import { paginationBaseSchema } from '../../helpers/validations-helper.js'
 import { isDefined, isNullOrUndefined } from '../../helpers/object-helper.js'
 
 const paramsBaseSchema = {
-  exampleID: Joi.number().required(),
+  subcategoryID: Joi.number().required(),
 }
 
-const validateCreateExampleSchema = celebrate({
+const validateCreateSubcategorySchema = celebrate({
   [Segments.BODY]: {
-    field1: Joi.string().required(),
-    field2: Joi.string().required(),
+    name: Joi.string().required(),
+    description: Joi.string(),
+    type: Joi.string(),
+    categoryId: Joi.number().required(),
   },
 })
 
-const validateFetchExamplesSchema = celebrate({
-  [Segments.QUERY]: {
-    ...paginationBaseSchema,
-    field1: Joi.string().optional(),
-    field2: Joi.string().optional(),
-  },
-})
-
-const validateFetchExampleSchema = celebrate({
-  [Segments.PARAMS]: paramsBaseSchema,
-})
-
-const validateEditExampleSchema = celebrate({
+const validateUpdateSubcategorySchema = celebrate({
   [Segments.PARAMS]: paramsBaseSchema,
   [Segments.BODY]: {
-    field1: Joi.string().optional(),
-    field2: Joi.string().optional(),
+    name: Joi.string().required(),
+    description: Joi.string(),
+    type: Joi.string(),
+    categoryId: Joi.number().required(),
   },
 })
 
-const validateRemoveExampleSchema = celebrate({
+const validateRemoveSubcategory = celebrate({
   [Segments.PARAMS]: paramsBaseSchema,
 })
 
-const validateUniqueExample = async (request, _response, next) => {
+const validateUniqueSubcategory = async (request, _response, next) => {
   const {
-    body: { field1 },
+    body: { name },
   } = request
 
-  const example = await findExampleByField1(field1)
+  const category = await findSubcategoryByName(name)
 
-  if (isDefined(example)) {
-    throw new AppError(HttpStatus[409].statusCode, HttpStatus[409].message)
+  if (isDefined(category)) {
+    throw new AppError(HttpStatus[409].statusCode, 'Subcategoria já cadastrada.')
   }
+
   next()
 }
 
-const validateExampleExistence = async (request, _response, next) => {
+const validateUniqueSubcategoryPUT = async (request, _response, next) => {
+  const {
+    body: { name },
+    params: { subcategoryID },
+  } = request
+  const subcategoryByID = await findSubcategoryByID(subcategoryID)
+  const checkNameEquality = subcategoryByID.name === name
+
+  if (!checkNameEquality) {
+    const subcategory = await findSubcategoryByName(name)
+
+    if (isDefined(subcategory)) {
+      throw new AppError(HttpStatus[409].statusCode, 'Subcategoria já cadastrada.')
+    }
+  }
+
+  next()
+}
+
+const validateSubcategoryExistence = async (request, _response, next) => {
   const { query, params, body } = request
 
-  const exampleID = params.exampleID || query.exampleID || body.exampleID
-
-  const example = await findExampleByID(exampleID)
-
-  if (isNullOrUndefined(example)) {
+  const subcategoryID = params.subcategoryID || query.subcategoryID || body.subcategoryID
+  const subcategory = await findSubcategoryByID(subcategoryID)
+  if (isNullOrUndefined(subcategory)) {
     throw new AppError(HttpStatus[404].statusCode, HttpStatus[404].message)
   }
 
-  request.locals.example = example
+  request.locals.subcategory = subcategory
 
   next()
 }
 
 export {
-  validateCreateExampleSchema,
-  validateFetchExamplesSchema,
-  validateFetchExampleSchema,
-  validateEditExampleSchema,
-  validateRemoveExampleSchema,
-  validateUniqueExample,
-  validateExampleExistence,
+  validateCreateSubcategorySchema,
+  validateUniqueSubcategory,
+  validateSubcategoryExistence,
+  validateRemoveSubcategory,
+  validateUpdateSubcategorySchema,
+  validateUniqueSubcategoryPUT,
 }

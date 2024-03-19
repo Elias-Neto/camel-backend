@@ -1,47 +1,49 @@
-import { Sequelize } from 'sequelize'
-import Op from Sequelize;
-import subcategory from './subcategory.model.js'
-
-import { isDefined } from '../../helpers/object-helper.js'
-import { searchAttributeString } from '../../helpers/query-helper.js'
+import subcategoryModel from './subcategory.model.js'
+import { Op } from 'sequelize'
 
 const insertSubcategory = async data => {
-  return await subcategory.create(data)
-}
-
-const findSubcategory = async subcategoryInfo => {
-  if (typeof(subcategoryInfo) === 'number') { 
-    return await subcategory.findOne({
-      where: {
-        subcategory_id: subcategoryInfo,
-        deletedAt: null,
-      },
-    })
-  }else if (typeof(subcategoryInfo) === 'string') {
-    return await subcategory.findAll({
-      where: {
-        subcategory_name: {
-          [Op.like] : `%${subcategoryInfo}%`
-        },
-        deletedAt: null,
-      },
-    })
-  }
+  return await subcategoryModel.create(data)
 }
 
 const updateSubcategory = async (subcategoryID, data) => {
-  await subcategory.update(data, {
+  await subcategoryModel.update(data, {
     where: {
       id: subcategoryID,
       deletedAt: null,
     },
   })
+}
 
-  return await findSubcategory(subcategoryID)
+const findAllSubcategory = async () => {
+  return await subcategoryModel.findAll({
+    where: {
+      deletedAt: null,
+    },
+  })
+}
+
+const findSubcategoryByID = async subcategoryID => {
+  return await subcategoryModel.findOne({
+    where: {
+      id: subcategoryID,
+      deletedAt: null,
+    },
+  })
+}
+
+const findSubcategoryByName = async name => {
+  return await subcategoryModel.findOne({
+    where: {
+      name: {
+        [Op.like] : [`%${name}%`]
+      },
+      deletedAt: null,
+    },
+  })
 }
 
 const deleteSubcategory = async subcategoryID => {
-  return await subcategory.destroy({
+  return await categoryModel.destroy({
     where: {
       id: subcategoryID,
       deletedAt: null,
@@ -51,7 +53,9 @@ const deleteSubcategory = async subcategoryID => {
 
 export {
   insertSubcategory,
-  findSubcategory,
   updateSubcategory,
-  deleteSubcategory,
+  findAllSubcategory,
+  findSubcategoryByID,
+  findSubcategoryByName,
+  deleteSubcategory
 }

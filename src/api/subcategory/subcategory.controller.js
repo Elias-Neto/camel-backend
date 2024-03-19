@@ -1,20 +1,24 @@
 import {
-  insertExample,
-  findAndCountExamples,
-  updateExample,
-  deleteExample,
-} from './examples.dao.js'
+  insertSubcategory,
+  updateSubcategory,
+  findSubcategory,
+  deleteSubcategory,
+} from './subcategory.dao.js'
 
 import AppError from '../../utils/AppError.js'
 import HttpStatus from '../../types/global.enums.js'
 
-const createExample = async (request, response) => {
+const createSubcategory = async (request, response) => {
   const { body } = request
 
   try {
-    const user = await insertExample(body)
+    //Transformar em UpperCase
+    Object.keys(body).forEach( (key, index) => {
+      body[key] = body[key].toUpperCase()
+    })
+    const subcategory = await insertSubcategory(body)
 
-    return response.status(201).json(user)
+    return response.status(201).json(subcategory)
   } catch (error) {
     if (error instanceof AppError) {
       throw response.status(error.statusCode).json({
@@ -28,15 +32,14 @@ const createExample = async (request, response) => {
   }
 }
 
-const fetchExamples = async (request, response) => {
-  const { query } = request
+const fetchSubcategory = async (request, response) => {
+
+  const { body } = request.body
 
   try {
-    const { data, count } = await findAndCountExamples(query)
+    const subcategory = await findSubcategory(body) 
 
-    response.set('x-count', count)
-
-    response.status(200).json(data)
+    response.status(200).json(subcategory)
   } catch (error) {
     if (error instanceof AppError) {
       throw response.status(error.statusCode).json({
@@ -50,27 +53,7 @@ const fetchExamples = async (request, response) => {
   }
 }
 
-const fetchExample = async (request, response) => {
-  const { locals } = request
-
-  try {
-    const { example } = locals
-
-    response.status(200).json(example)
-  } catch (error) {
-    if (error instanceof AppError) {
-      throw response.status(error.statusCode).json({
-        message: error.message,
-      })
-    }
-
-    throw response.status(HttpStatus[500].statusCode).json({
-      message: HttpStatus[500].message,
-    })
-  }
-}
-
-const editExample = async (request, response) => {
+const editSubcategory = async (request, response) => {
   const { params, body } = request
 
   try {
@@ -114,9 +97,9 @@ const removeExample = async (request, response) => {
 }
 
 export {
-  createExample,
-  fetchExamples,
-  fetchExample,
-  editExample,
-  removeExample,
+  createSubcategory,
+  fetchSubcategories,
+  fetchSubcategory,
+  editSubcategory,
+  removeSubcategory,
 }

@@ -9,24 +9,24 @@ const insertSubcategory = async data => {
   return await subcategory.create(data)
 }
 
-const findSubcategoryByID = async subcategoryID => {
-  return await subcategory.findOne({
-    where: {
-      id: subcategoryID,
-      deletedAt: null,
-    },
-  })
-}
-
-const findSubcategoryByName = async field1 => {
-  return await subcategory.findOne({
-    where: {
-       subcategory_name:{
-        [Op.like] : `%${field1}%`
-       },
-      deletedAt: null,
-    },
-  })
+const findSubcategory = async subcategoryInfo => {
+  if (typeof(subcategoryInfo) === 'number') { 
+    return await subcategory.findOne({
+      where: {
+        subcategory_id: subcategoryInfo,
+        deletedAt: null,
+      },
+    })
+  }else if (typeof(subcategoryInfo) === 'string') {
+    return await subcategory.findAll({
+      where: {
+        subcategory_name: {
+          [Op.like] : `%${subcategoryInfo}%`
+        },
+        deletedAt: null,
+      },
+    })
+  }
 }
 
 const updateSubcategory = async (subcategoryID, data) => {
@@ -37,7 +37,7 @@ const updateSubcategory = async (subcategoryID, data) => {
     },
   })
 
-  return await findSubcategoryByID(subcategoryID)
+  return await findSubcategory(subcategoryID)
 }
 
 const deleteSubcategory = async subcategoryID => {
@@ -51,8 +51,7 @@ const deleteSubcategory = async subcategoryID => {
 
 export {
   insertSubcategory,
-  findSubcategoryByID,
-  findSubcategoryByName,
+  findSubcategory,
   updateSubcategory,
   deleteSubcategory,
 }

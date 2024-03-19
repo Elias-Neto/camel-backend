@@ -23,7 +23,7 @@ const subcategoryModel = sequelize.define('subcategory', {
 
 })
 
-subcategoryModel.belongsTo(categoryModel, { foreignKey: "category_id", onDelete: "CASCADE" });
-categoryModel.hasMany(subcategoryModel, { foreignKey: "category_id", onDelete: "CASCADE" });
+//subcategoryModel.belongsTo(categoryModel, { foreignKey: "category_id", onDelete: "CASCADE" });
+//categoryModel.hasMany(subcategoryModel, { foreignKey: "category_id", onDelete: "CASCADE" });
 
 export default subcategoryModel

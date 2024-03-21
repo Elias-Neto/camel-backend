@@ -65,6 +65,15 @@ const findProductByID = async productID => {
   })
 }
 
+const findProductsByIDs = async productIDs => {
+  return await productsModel.findAll({
+    where: {
+      id: { [Sequelize.Op.in]: productIDs },
+      deletedAt: null,
+    },
+  })
+}
+
 const updateProduct = async (productID, data) => {
   await productsModel.update(data, {
     where: {
@@ -92,6 +101,7 @@ export {
   findAndCountProducts,
   findProductByName,
   findProductByID,
+  findProductsByIDs,
   updateProduct,
   deleteProduct,
 }

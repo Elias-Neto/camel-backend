@@ -20,7 +20,7 @@ const productsModel = sequelize.define('products', {
     allowNull: false,
   },
   description: {
-    type: DataTypes.STRING,
+    type: DataTypes.TEXT,
     required: true,
     allowNull: false,
   },

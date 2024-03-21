@@ -1,6 +1,10 @@
 import { celebrate, Joi, Segments } from 'celebrate'
 
-import { findProductByName, findProductByID } from './products.dao.js'
+import {
+  findProductByName,
+  findProductByID,
+  findProductsByIDs,
+} from './products.dao.js'
 
 import AppError from '../../utils/AppError.js'
 import HttpStatus from '../../types/global.enums.js'
@@ -79,6 +83,20 @@ const validateProductExistence = async (request, _response, next) => {
   next()
 }
 
+const validateProductsExistence = async (request, _response, next) => {
+  const { body } = request
+
+  const productIDs = body.products.map(product => product.id)
+
+  const productsFound = await findProductsByIDs(productIDs)
+
+  if (productsFound.length !== productIDs.length) {
+    throw new AppError(HttpStatus[404].statusCode, HttpStatus[404].message)
+  }
+
+  next()
+}
+
 export {
   validateCreateProductSchema,
   validateFetchProductsSchema,
@@ -87,4 +105,5 @@ export {
   validateRemoveProductSchema,
   validateUniqueProduct,
   validateProductExistence,
+  validateProductsExistence,
 }

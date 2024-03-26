@@ -3,8 +3,8 @@ import {
   updateSubcategory,
   deleteSubcategory,
   findSubcategoryByID,
-  findSubcategoryByName,
-  findAllSubcategory
+  //findSubcategoryByName,
+  findAllSubcategory,
 } from './subcategory.dao.js'
 
 import AppError from '../../utils/AppError.js'
@@ -12,12 +12,14 @@ import HttpStatus from '../../types/global.enums.js'
 
 const createSubcategory = async (request, response) => {
   const { body } = request
+  console.log("Chegou aqui")
 
   try {
+    /*
     //Transformar em UpperCase
-    Object.keys(body).forEach( (key, index) => {
+    Object.keys(body).forEach(key => {
       body[key] = body[key].toUpperCase()
-    })
+    })*/
     const subcategory = await insertSubcategory(body)
 
     return response.status(201).json(subcategory)

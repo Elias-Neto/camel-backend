@@ -6,7 +6,7 @@ import { loadSeedData } from '../../../test/utils/index.js'
 
 beforeAll(async () => {
   await sequelize.sync({ force: true }) // Cria as tabelas no banco de dados de teste
-  await loadSeedData('users')
+  await loadSeedData('subcategories')
 })
 
 afterAll(async () => {
@@ -52,6 +52,9 @@ describe('[POST] - /subcategories', () => {
     })
 
     expect(response.status).toBe(409)
-    expect(response.body).toHaveProperty('message', 'Subcategoria já cadastrada.')
+    expect(response.body).toHaveProperty(
+      'message',
+      'Subcategoria já cadastrada.',
+    )
   })
 })

@@ -4,7 +4,7 @@ import { loadSeedData } from '../../../test/utils/index.js'
 
 beforeAll(async () => {
   await sequelize.sync({ force: true }) // Cria as tabelas no banco de dados de teste
-  await loadSeedData('users')
+  await loadSeedData('subcategories')
 })
 
 afterAll(async () => {

@@ -15,13 +15,13 @@ const subcategoryModel = sequelize.define('subcategory', {
   },
   description: {
     type: DataTypes.STRING,
-    allowNull: true
+    allowNull: true,
   },
   type: {
     type: DataTypes.STRING(50),
     required: true,
     allowNull: false,
-  }
+  },
 })
 
 export default subcategoryModel

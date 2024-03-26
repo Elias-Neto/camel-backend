@@ -5,7 +5,7 @@ import {
   fetchSubcategories,
   fetchSubcategory,
   removeSubcategory,
-  editSubcategory
+  editSubcategory,
 } from './subcategory.controller.js'
 
 import {
@@ -14,7 +14,7 @@ import {
   validateSubcategoryExistence,
   validateRemoveSubcategory,
   validateUpdateSubcategorySchema,
-  validateUniqueSubcategoryPUT
+  validateUniqueSubcategoryPUT,
 } from './subcategory.middleware.js'
 
 const router = Router()

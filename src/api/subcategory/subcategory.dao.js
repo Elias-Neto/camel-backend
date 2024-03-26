@@ -35,7 +35,7 @@ const findSubcategoryByName = async name => {
   return await subcategoryModel.findOne({
     where: {
       name: {
-        [Op.like] : [`%${name}%`]
+        [Op.like]: `%${name}%`,
       },
       deletedAt: null,
     },
@@ -43,7 +43,7 @@ const findSubcategoryByName = async name => {
 }
 
 const deleteSubcategory = async subcategoryID => {
-  return await categoryModel.destroy({
+  return await subcategoryModel.destroy({
     where: {
       id: subcategoryID,
       deletedAt: null,
@@ -57,5 +57,5 @@ export {
   findAllSubcategory,
   findSubcategoryByID,
   findSubcategoryByName,
-  deleteSubcategory
+  deleteSubcategory,
 }

@@ -23,7 +23,7 @@ const categorySubcategory = sequelize.define('categorySubcategory', {
       model: 'products',
       key: 'id',
     },
-  }
+  },
 })
 
 export default categorySubcategory

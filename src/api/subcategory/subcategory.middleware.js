@@ -1,6 +1,9 @@
 import { celebrate, Joi, Segments } from 'celebrate'
 
-import { findSubcategoryByID, findSubcategoryByName } from './subcategory.dao.js'
+import {
+  findSubcategoryByID,
+  findSubcategoryByName,
+} from './subcategory.dao.js'
 
 import AppError from '../../utils/AppError.js'
 import HttpStatus from '../../types/global.enums.js'
@@ -41,7 +44,10 @@ const validateUniqueSubcategory = async (request, _response, next) => {
   const category = await findSubcategoryByName(name)
 
   if (isDefined(category)) {
-    throw new AppError(HttpStatus[409].statusCode, 'Subcategoria já cadastrada.')
+    throw new AppError(
+      HttpStatus[409].statusCode,
+      'Subcategoria já cadastrada.',
+    )
   }
 
   next()
@@ -59,7 +65,10 @@ const validateUniqueSubcategoryPUT = async (request, _response, next) => {
     const subcategory = await findSubcategoryByName(name)
 
     if (isDefined(subcategory)) {
-      throw new AppError(HttpStatus[409].statusCode, 'Subcategoria já cadastrada.')
+      throw new AppError(
+        HttpStatus[409].statusCode,
+        'Subcategoria já cadastrada.',
+      )
     }
   }
 
@@ -69,7 +78,8 @@ const validateUniqueSubcategoryPUT = async (request, _response, next) => {
 const validateSubcategoryExistence = async (request, _response, next) => {
   const { query, params, body } = request
 
-  const subcategoryID = params.subcategoryID || query.subcategoryID || body.subcategoryID
+  const subcategoryID =
+    params.subcategoryID || query.subcategoryID || body.subcategoryID
   const subcategory = await findSubcategoryByID(subcategoryID)
   if (isNullOrUndefined(subcategory)) {
     throw new AppError(HttpStatus[404].statusCode, HttpStatus[404].message)

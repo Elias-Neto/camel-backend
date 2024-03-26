@@ -38,6 +38,7 @@ ordersProductModel.belongsToMany(ordersModel, {
 async function connectToDatabase() {
   try {
     sequelize.authenticate()
+    sequelize.sync()
     // eslint-disable-next-line
     console.log('✅ Database connected!')
   } catch (error) {

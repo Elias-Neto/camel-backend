@@ -1,14 +1,26 @@
 import { celebrate, Joi, Segments } from 'celebrate'
 
-import { findCategoryByID, findCategoryByName } from './category.dao.js'
+import { findCategoryByID, findCategoryByName } from './categories.dao.js'
 
 import AppError from '../../utils/AppError.js'
 import HttpStatus from '../../types/global.enums.js'
+import { paginationBaseSchema } from '../../helpers/validations-helper.js'
 import { isDefined, isNullOrUndefined } from '../../helpers/object-helper.js'
 
 const paramsBaseSchema = {
-  categoryID: Joi.string().required(),
+  categoryID: Joi.string().uuid().required(),
 }
+
+const validateFetchCategoriesSchema = celebrate({
+  [Segments.QUERY]: {
+    ...paginationBaseSchema,
+    name: Joi.string(),
+  },
+})
+
+const validateFetchCategorySchema = celebrate({
+  [Segments.PARAMS]: paramsBaseSchema,
+})
 
 const validateCreateCategorySchema = celebrate({
   [Segments.BODY]: {
@@ -27,7 +39,7 @@ const validateUpdateCategorySchema = celebrate({
   },
 })
 
-const validateRemoveCategory = celebrate({
+const validateRemoveCategorySchema = celebrate({
   [Segments.PARAMS]: paramsBaseSchema,
 })
 
@@ -68,7 +80,9 @@ const validateCategoryExistence = async (request, _response, next) => {
   const { query, params, body } = request
 
   const categoryID = params.categoryID || query.categoryID || body.categoryID
+
   const category = await findCategoryByID(categoryID)
+
   if (isNullOrUndefined(category)) {
     throw new AppError(HttpStatus[404].statusCode, HttpStatus[404].message)
   }
@@ -82,7 +96,9 @@ export {
   validateCreateCategorySchema,
   validateUniqueCategory,
   validateCategoryExistence,
-  validateRemoveCategory,
+  validateRemoveCategorySchema,
   validateUpdateCategorySchema,
   validateUniqueCategoryPUT,
+  validateFetchCategoriesSchema,
+  validateFetchCategorySchema,
 }

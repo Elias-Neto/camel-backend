@@ -6,16 +6,17 @@ import {
   fetchCategory,
   removeCategory,
   editCategory,
-} from './category.controller.js'
+} from './categories.controller.js'
 
 import {
   validateCreateCategorySchema,
   validateUniqueCategory,
   validateCategoryExistence,
-  validateRemoveCategory,
+  validateRemoveCategorySchema,
   validateUpdateCategorySchema,
-  validateUniqueCategoryPUT,
-} from './category.middleware.js'
+  validateFetchCategoriesSchema,
+  validateFetchCategorySchema,
+} from './categories.middleware.js'
 
 const router = Router()
 
@@ -25,20 +26,27 @@ router.post('/', [
   createCategory,
 ])
 
-router.get('/', [fetchCategories])
+router.get('/', [validateFetchCategoriesSchema, fetchCategories])
 
-router.get('/:categoryID', [fetchCategory])
+router.get('/:categoryID', [
+  validateFetchCategorySchema,
+  validateCategoryExistence,
+  fetchCategory,
+])
 
 router.delete('/:categoryID', [
-  validateRemoveCategory,
+  validateRemoveCategorySchema,
   validateCategoryExistence,
   removeCategory,
+  // validateRemoveExampleSchema,
+  // validateExampleExistence,
+  // removeExample,
 ])
 
 router.put('/:categoryID', [
   validateUpdateCategorySchema,
   validateCategoryExistence,
-  validateUniqueCategoryPUT,
+  validateUniqueCategory,
   editCategory,
 ])
 

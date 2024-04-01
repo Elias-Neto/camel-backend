@@ -1,17 +1,20 @@
 [
     {
+      "id": "ceb3ec8a-a3e3-426c-92b6-aca71a8c0558",
       "name": "parafuso",
       "description": "Parafuso de cabeça grande",
       "type": "produto",
       "deletedAt": null 
     },
     {
-        "name": "rosca",
-        "description": "rocsa gente boa",
+        "id": "1a04c615-0e1d-4b02-a269-66ff69344703",
+        "name": "porca",
+        "description": "porca rosqueavelica gente boa",
         "type": "produto",
         "deletedAt": null 
     },
     {
+        "id": "b7b4ea93-1ac4-48cd-8190-3d80cee9786f",
         "name": "lanterna",
         "description": "Lanterna que alumeia tudo",
         "type": "produto",

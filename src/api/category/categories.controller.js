@@ -2,9 +2,9 @@ import {
   insertCategory,
   updateCategory,
   deleteCategory,
-  findAllCategory,
+  findAndCountCategories,
   findCategoryByID,
-} from './category.dao.js'
+} from './categories.dao.js'
 
 import AppError from '../../utils/AppError.js'
 import HttpStatus from '../../types/global.enums.js'
@@ -13,11 +13,6 @@ const createCategory = async (request, response) => {
   const { body } = request
 
   try {
-    //Transformar em UpperCase
-    // Object.keys(body).forEach((key, index) => {
-    //   body[key] = body[key].toUpperCase()
-    // })
-
     const category = await insertCategory(body)
 
     return response.status(201).json(category)
@@ -35,8 +30,12 @@ const createCategory = async (request, response) => {
 }
 
 const fetchCategories = async (request, response) => {
+  const { query } = request
+
   try {
-    const data = await findAllCategory()
+    const { data, count } = await findAndCountCategories(query)
+
+    response.set('x-count', count)
 
     response.status(200).json(data)
   } catch (error) {
@@ -53,9 +52,10 @@ const fetchCategories = async (request, response) => {
 }
 
 const fetchCategory = async (request, response) => {
-  const { body } = request
+  const { locals } = request
+
   try {
-    const category = findCategoryByID(body.category_id)
+    const { category } = locals
 
     response.status(200).json(category)
   } catch (error) {
@@ -101,6 +101,7 @@ const removeCategory = async (request, response) => {
   const { params } = request
   try {
     const { categoryID } = params
+    console.log('testando o teste', categoryID)
     await deleteCategory(categoryID)
 
     response.status(204).end()

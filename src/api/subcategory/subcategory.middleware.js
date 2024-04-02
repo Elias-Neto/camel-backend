@@ -10,7 +10,7 @@ import HttpStatus from '../../types/global.enums.js'
 import { isDefined, isNullOrUndefined } from '../../helpers/object-helper.js'
 
 const paramsBaseSchema = {
-  subcategoryID: Joi.number().required(),
+  subcategoryID: Joi.string().uuid().required(),
 }
 
 const validateCreateSubcategorySchema = celebrate({
@@ -18,7 +18,6 @@ const validateCreateSubcategorySchema = celebrate({
     name: Joi.string().required(),
     description: Joi.string(),
     type: Joi.string(),
-    categoryId: Joi.number().required(),
   },
 })
 
@@ -28,7 +27,6 @@ const validateUpdateSubcategorySchema = celebrate({
     name: Joi.string().required(),
     description: Joi.string(),
     type: Joi.string(),
-    categoryId: Joi.number().required(),
   },
 })
 

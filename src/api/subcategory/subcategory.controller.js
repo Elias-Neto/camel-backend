@@ -12,7 +12,6 @@ import HttpStatus from '../../types/global.enums.js'
 
 const createSubcategory = async (request, response) => {
   const { body } = request
-  console.log("Chegou aqui")
 
   try {
     /*
@@ -55,9 +54,9 @@ const fetchSubcategories = async (request, response) => {
 }
 
 const fetchSubcategory = async (request, response) => {
-  const { body } = request
+  const { params } = request
   try {
-    const subcategory = findSubcategoryByID(body.subcategory_id)
+    const subcategory = findSubcategoryByID(params)
 
     response.status(200).json(subcategory)
   } catch (error) {

@@ -5,7 +5,6 @@ import examplesRouter from './examples/examples.router.js'
 import sessionsRouter from './sessions/sessions.router.js'
 import productsRouter from './products/products.router.js'
 import ordersRouter from './orders/orders.router.js'
-import subcategory from './subcategory/subcategory.router.js'
 
 const router = Router()
 
@@ -14,6 +13,5 @@ router.use('/orders', ordersRouter)
 router.use('/examples', examplesRouter)
 router.use('/sessions', sessionsRouter)
 router.use('/products', productsRouter)
-router.use('/subcategory', subcategory)
 
 export default router

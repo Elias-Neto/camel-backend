@@ -4,17 +4,18 @@ import {
   createSubcategory,
   fetchSubcategories,
   fetchSubcategory,
-  removeSubcategory,
   editSubcategory,
+  removeSubcategory,
 } from './subcategory.controller.js'
-
 import {
   validateCreateSubcategorySchema,
+  validateFetchSubcategoriesSchema,
+  validateFetchSubcategorySchema,
+  validateEditSubcategorySchema,
+  validateRemoveSubcategorySchema,
   validateUniqueSubcategory,
+  //validateSubcategoriesExistence, //Não está sendo usado
   validateSubcategoryExistence,
-  validateRemoveSubcategory,
-  validateUpdateSubcategorySchema,
-  validateUniqueSubcategoryPUT,
 } from './subcategory.middleware.js'
 
 const router = Router()
@@ -25,21 +26,25 @@ router.post('/', [
   createSubcategory,
 ])
 
-router.get('/', [fetchSubcategories])
+router.get('/', [validateFetchSubcategoriesSchema, fetchSubcategories])
 
-router.get('/:subcategoryID', [fetchSubcategory])
-
-router.delete('/:subcategoryID', [
-  validateRemoveSubcategory,
+router.get('/:subcategoryID', [
+  validateFetchSubcategorySchema,
   validateSubcategoryExistence,
-  removeSubcategory,
+  fetchSubcategory,
 ])
 
 router.put('/:subcategoryID', [
-  validateUpdateSubcategorySchema,
+  validateEditSubcategorySchema,
   validateSubcategoryExistence,
-  validateUniqueSubcategoryPUT,
+  validateUniqueSubcategory,
   editSubcategory,
+])
+
+router.delete('/:subcategoryID', [
+  validateRemoveSubcategorySchema,
+  validateSubcategoryExistence,
+  removeSubcategory,
 ])
 
 export default router

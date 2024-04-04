@@ -1,12 +1,14 @@
 import { celebrate, Joi, Segments } from 'celebrate'
 
 import {
-  findSubcategoryByID,
   findSubcategoryByName,
+  findSubcategoryByID,
+  findSubcategoriesByIDs,
 } from './subcategory.dao.js'
 
 import AppError from '../../utils/AppError.js'
 import HttpStatus from '../../types/global.enums.js'
+import { paginationBaseSchema } from '../../helpers/validations-helper.js'
 import { isDefined, isNullOrUndefined } from '../../helpers/object-helper.js'
 
 const paramsBaseSchema = {
@@ -16,21 +18,34 @@ const paramsBaseSchema = {
 const validateCreateSubcategorySchema = celebrate({
   [Segments.BODY]: {
     name: Joi.string().required(),
-    description: Joi.string(),
-    type: Joi.string(),
+    description: Joi.string().optional(),
+    type: Joi.string().required(),
   },
 })
 
-const validateUpdateSubcategorySchema = celebrate({
+const validateFetchSubcategoriesSchema = celebrate({
+  [Segments.QUERY]: {
+    ...paginationBaseSchema,
+    name: Joi.string().optional(),
+    description: Joi.string().optional(),
+    type: Joi.boolean().optional(),
+  },
+})
+
+const validateFetchSubcategorySchema = celebrate({
+  [Segments.PARAMS]: paramsBaseSchema,
+})
+
+const validateEditSubcategorySchema = celebrate({
   [Segments.PARAMS]: paramsBaseSchema,
   [Segments.BODY]: {
-    name: Joi.string().required(),
-    description: Joi.string(),
-    type: Joi.string(),
+    name: Joi.string().optional(),
+    description: Joi.string().optional(),
+    type: Joi.string().optional(),
   },
 })
 
-const validateRemoveSubcategory = celebrate({
+const validateRemoveSubcategorySchema = celebrate({
   [Segments.PARAMS]: paramsBaseSchema,
 })
 
@@ -39,34 +54,11 @@ const validateUniqueSubcategory = async (request, _response, next) => {
     body: { name },
   } = request
 
-  const category = await findSubcategoryByName(name)
-
-  if (isDefined(category)) {
-    throw new AppError(
-      HttpStatus[409].statusCode,
-      'Subcategoria já cadastrada.',
-    )
-  }
-
-  next()
-}
-
-const validateUniqueSubcategoryPUT = async (request, _response, next) => {
-  const {
-    body: { name },
-    params: { subcategoryID },
-  } = request
-  const subcategoryByID = await findSubcategoryByID(subcategoryID)
-  const checkNameEquality = subcategoryByID.name === name
-
-  if (!checkNameEquality) {
+  if (isDefined(name)) {
     const subcategory = await findSubcategoryByName(name)
 
     if (isDefined(subcategory)) {
-      throw new AppError(
-        HttpStatus[409].statusCode,
-        'Subcategoria já cadastrada.',
-      )
+      throw new AppError(HttpStatus[409].statusCode, HttpStatus[409].message)
     }
   }
 
@@ -78,7 +70,9 @@ const validateSubcategoryExistence = async (request, _response, next) => {
 
   const subcategoryID =
     params.subcategoryID || query.subcategoryID || body.subcategoryID
+
   const subcategory = await findSubcategoryByID(subcategoryID)
+
   if (isNullOrUndefined(subcategory)) {
     throw new AppError(HttpStatus[404].statusCode, HttpStatus[404].message)
   }
@@ -88,11 +82,27 @@ const validateSubcategoryExistence = async (request, _response, next) => {
   next()
 }
 
+const validateSubcategoriesExistence = async (request, _response, next) => {
+  const { body } = request
+
+  const subcategoryIDs = body.subcategories.map(subcategory => subcategory.id)
+
+  const subcategoriesFound = await findSubcategoriesByIDs(subcategoryIDs)
+
+  if (subcategoriesFound.length !== subcategoryIDs.length) {
+    throw new AppError(HttpStatus[404].statusCode, HttpStatus[404].message)
+  }
+
+  next()
+}
+
 export {
   validateCreateSubcategorySchema,
+  validateFetchSubcategoriesSchema,
+  validateFetchSubcategorySchema,
+  validateEditSubcategorySchema,
+  validateRemoveSubcategorySchema,
   validateUniqueSubcategory,
   validateSubcategoryExistence,
-  validateRemoveSubcategory,
-  validateUpdateSubcategorySchema,
-  validateUniqueSubcategoryPUT,
+  validateSubcategoriesExistence,
 }

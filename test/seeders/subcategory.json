@@ -1,0 +1,37 @@
+[
+  {
+    "id": "54ad1e07-e4a3-4b34-a1e3-a07313901487",
+    "name": "Subcategory 1",
+    "description": "Description of Product 1",
+    "type": "maravilha",
+    "deletedAt": null 
+  },
+  {
+    "id": "3c632086-d6a1-4772-ba19-15905026be9b",
+    "name": "Subcategory 2",
+    "description": "Description of Product 1",
+    "type": "maravilha",
+    "deletedAt": null 
+  },
+  {
+    "id": "de5d4b20-36f2-4aaf-a47d-e45570158e60",
+    "name": "Subcategory 3",
+    "description": "Description of Product 1",
+    "type": "maravilha",
+    "deletedAt": null 
+  },
+  {
+    "id": "b06a0c58-02f0-4a8e-be39-9b214b242b25",
+    "name": "Subcategory 4",
+    "description": "Description of Product 1",
+    "type": "maravilha",
+    "deletedAt": null 
+  },
+  {
+    "id": "16e3797c-b713-4d51-aa4b-d47ea8472c3b",
+    "name": "Subcategory 5",
+    "description": "Description of Product 1",
+    "type": "maravilha",
+    "deletedAt": null 
+  }
+]

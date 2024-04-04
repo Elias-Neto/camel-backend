@@ -1,10 +1,8 @@
 import {
   insertSubcategory,
+  findAndCountSubcategories,
   updateSubcategory,
   deleteSubcategory,
-  findSubcategoryByID,
-  //findSubcategoryByName,
-  findAllSubcategory,
 } from './subcategory.dao.js'
 
 import AppError from '../../utils/AppError.js'
@@ -14,11 +12,6 @@ const createSubcategory = async (request, response) => {
   const { body } = request
 
   try {
-    /*
-    //Transformar em UpperCase
-    Object.keys(body).forEach(key => {
-      body[key] = body[key].toUpperCase()
-    })*/
     const subcategory = await insertSubcategory(body)
 
     return response.status(201).json(subcategory)
@@ -36,8 +29,12 @@ const createSubcategory = async (request, response) => {
 }
 
 const fetchSubcategories = async (request, response) => {
+  const { query } = request
+
   try {
-    const data = await findAllSubcategory()
+    const { data, count } = await findAndCountSubcategories(query)
+
+    response.set('x-count', count)
 
     response.status(200).json(data)
   } catch (error) {
@@ -54,9 +51,10 @@ const fetchSubcategories = async (request, response) => {
 }
 
 const fetchSubcategory = async (request, response) => {
-  const { params } = request
+  const { locals } = request
+
   try {
-    const subcategory = findSubcategoryByID(params)
+    const { subcategory } = locals
 
     response.status(200).json(subcategory)
   } catch (error) {
@@ -74,34 +72,31 @@ const fetchSubcategory = async (request, response) => {
 
 const editSubcategory = async (request, response) => {
   const { params, body } = request
+
   try {
     const { subcategoryID } = params
-    var subcategory = await findSubcategoryByID(subcategoryID)
 
-    if (!subcategory) {
-      throw new AppError(HttpStatus[404].statusCode, HttpStatus[404].message)
-    }
+    const subcategory = await updateSubcategory(subcategoryID, body)
 
-    await updateSubcategory(subcategoryID, body)
-
-    subcategory = await findSubcategoryByID(subcategoryID)
     response.status(200).json(subcategory)
   } catch (error) {
     if (error instanceof AppError) {
-      return response.status(error.statusCode).json({
+      throw response.status(error.statusCode).json({
         message: error.message,
       })
     }
-    return response.status(HttpStatus[500].statusCode).json({
-      message: error,
+    throw response.status(HttpStatus[500].statusCode).json({
+      message: HttpStatus[500].message,
     })
   }
 }
 
 const removeSubcategory = async (request, response) => {
   const { params } = request
+
   try {
     const { subcategoryID } = params
+
     await deleteSubcategory(subcategoryID)
 
     response.status(204).end()

@@ -83,7 +83,8 @@ const validateUniqueCategoryPUT = async (request, _response, next) => {
 const validateCategoryExistence = async (request, _response, next) => {
   const { query, params, body } = request
 
-  const categoryID = params.categoryID || query.categoryID || body.categoryID
+  const categoryID =
+    params.categoryID || query.categoryID || body.categoryID || body.category_id
 
   const category = await findCategoryByID(categoryID)
 

@@ -5,8 +5,14 @@ import {
   deleteProduct,
 } from './products.dao.js'
 
+import {
+  deleteImageByRelatedId,
+  fetchImageByRelatedId,
+} from '../images/images.dao.js'
+
 import AppError from '../../utils/AppError.js'
 import HttpStatus from '../../types/global.enums.js'
+import imageTypes from '../images/image.type.js'
 
 const createProduct = async (request, response) => {
   const { body } = request
@@ -32,7 +38,18 @@ const fetchProducts = async (request, response) => {
   const { query } = request
 
   try {
-    const { data, count } = await findAndCountProducts(query)
+    let { data, count } = await findAndCountProducts(query)
+
+    data = await Promise.all(
+      data.map(async product => {
+        const images = await fetchImageByRelatedId(
+          product.id,
+          imageTypes.PRODUCT,
+        )
+        product.dataValues.images = images
+        return product
+      }),
+    )
 
     response.set('x-count', count)
 
@@ -55,6 +72,9 @@ const fetchProduct = async (request, response) => {
 
   try {
     const { product } = locals
+    const images = await fetchImageByRelatedId(product.id, imageTypes.PRODUCT)
+
+    product.dataValues.images = images
 
     response.status(200).json(product)
   } catch (error) {
@@ -97,6 +117,7 @@ const removeProduct = async (request, response) => {
   try {
     const { productID } = params
 
+    await deleteImageByRelatedId(productID, imageTypes.PRODUCT)
     await deleteProduct(productID)
 
     response.status(204).end()

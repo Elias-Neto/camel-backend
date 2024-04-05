@@ -6,8 +6,14 @@ import {
   findCategoryByID,
 } from './categories.dao.js'
 
+import {
+  deleteImageByRelatedId,
+  fetchImageByRelatedId,
+} from '../images/images.dao.js'
+
 import AppError from '../../utils/AppError.js'
 import HttpStatus from '../../types/global.enums.js'
+import imageTypes from '../images/image.type.js'
 
 const createCategory = async (request, response) => {
   const { body } = request
@@ -33,7 +39,18 @@ const fetchCategories = async (request, response) => {
   const { query } = request
 
   try {
-    const { data, count } = await findAndCountCategories(query)
+    let { data, count } = await findAndCountCategories(query)
+
+    data = await Promise.all(
+      data.map(async category => {
+        const images = await fetchImageByRelatedId(
+          category.id,
+          imageTypes.CATEGORY,
+        )
+        category.dataValues.images = images
+        return category
+      }),
+    )
 
     response.set('x-count', count)
 
@@ -56,6 +73,9 @@ const fetchCategory = async (request, response) => {
 
   try {
     const { category } = locals
+    const images = await fetchImageByRelatedId(category.id, imageTypes.CATEGORY)
+
+    category.dataValues.images = images
 
     response.status(200).json(category)
   } catch (error) {
@@ -103,6 +123,7 @@ const removeCategory = async (request, response) => {
   try {
     const { categoryID } = params
 
+    await deleteImageByRelatedId(categoryID, imageTypes.CATEGORY)
     await deleteCategory(categoryID)
 
     response.status(204).end()

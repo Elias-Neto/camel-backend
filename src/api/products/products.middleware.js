@@ -70,7 +70,8 @@ const validateUniqueProduct = async (request, _response, next) => {
 const validateProductExistence = async (request, _response, next) => {
   const { query, params, body } = request
 
-  const productID = params.productID || query.productID || body.productID
+  const productID =
+    params.productID || query.productID || body.productID || body.related_id
 
   const product = await findProductByID(productID)
 

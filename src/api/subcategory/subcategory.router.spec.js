@@ -16,9 +16,9 @@ afterAll(async () => {
   await sequelize.close() // Fecha a conexão com o banco de dados de teste
 })
 
-describe('[POST] - /subcategory', () => {
+describe('[POST] - /subcategories', () => {
   it('should return 201 and create a new subcategory', async () => {
-    const response = await request(app).post('/subcategory').send({
+    const response = await request(app).post('/subcategories').send({
       name: 'Subcategory Test 1',
       description: 'Bom Demais',
       type: 'maravilha',
@@ -29,7 +29,7 @@ describe('[POST] - /subcategory', () => {
   })
 
   it('should return 400 when invalid request body', async () => {
-    const response = await request(app).post('/subcategory').send({
+    const response = await request(app).post('/subcategories').send({
       any_value: 'invalid_value',
     })
 
@@ -38,7 +38,7 @@ describe('[POST] - /subcategory', () => {
   })
 
   it('should return 409 when subcategory already exists', async () => {
-    const response = await request(app).post('/subcategory').send({
+    const response = await request(app).post('/subcategories').send({
       name: 'Subcategory Test 1',
       description: 'Bom Demais',
       type: 'maravilha',
@@ -53,7 +53,7 @@ describe('[POST] - /subcategory', () => {
       throw new Error()
     })
 
-    const response = await request(app).post('/subcategory').send({
+    const response = await request(app).post('/subcategories').send({
       name: 'Subcategory Test 2',
       description: 'ruim Demais',
       type: 'not_good',
@@ -108,26 +108,6 @@ describe('[GET] - /subcategories', () => {
     expect(response.body[0].name).toBe('Subcategory 5')
   })
 
-  /*it('should return 200 with available query param and a subcategories list', async () => {
-    const response = await request(app).get('/subcategories').query({
-      available: queryParams.available,
-    })
-
-    expect(response.status).toBe(200)
-    expect(Number(response.headers['x-count'])).toBe(1)
-    expect(response.body[0].name).toBe('Subcategory 5')
-  })
-
-  it('should return 200 with price query param and a subcategories list', async () => {
-    const response = await request(app).get('/subcategories').query({
-      price: queryParams.price,
-    })
-
-    expect(response.status).toBe(200)
-    expect(Number(response.headers['x-count'])).toBe(1)
-    expect(response.body[0].name).toBe('Subcategory 3')
-  })*/ //Não se aplica
-
   it('should return 400 when invalid request query params', async () => {
     const response = await request(app).get('/subcategories').query({
       any_value: 'invalid_value',
@@ -149,11 +129,11 @@ describe('[GET] - /subcategories', () => {
   })
 })
 
-describe('[GET] - /subcategories/:subcategoryID', () => {
+describe('[GET] - /subcategories/:subcategoriesID', () => {
   const subcategoryID = '54ad1e07-e4a3-4b34-a1e3-a07313901487'
 
   it('should return 200 and a single subcategory', async () => {
-    const response = await request(app).get(`/subcategory/${subcategoryID}`)
+    const response = await request(app).get(`/subcategories/${subcategoryID}`)
 
     expect(response.status).toBe(200)
 
@@ -163,7 +143,7 @@ describe('[GET] - /subcategories/:subcategoryID', () => {
   it('should return 400 when invalid param', async () => {
     const value = 'invalid_value'
 
-    const response = await request(app).get(`/subcategory/${value}`)
+    const response = await request(app).get(`/subcategories/${value}`)
 
     expect(response.status).toBe(400)
     expect(response.body).toHaveProperty('message', expect.any(String))
@@ -171,7 +151,7 @@ describe('[GET] - /subcategories/:subcategoryID', () => {
 
   it('should return 404 when subcategory does not exist', async () => {
     const response = await request(app).get(
-      '/subcategory/54ad1e07-e4a3-4b34-a1e3-a07313901480',
+      '/subcategories/54ad1e07-e4a3-4b34-a1e3-a07313901480',
     )
 
     expect(response.status).toBe(404)
@@ -183,14 +163,14 @@ describe('[GET] - /subcategories/:subcategoryID', () => {
       throw new Error()
     })
 
-    const response = await request(app).get(`/subcategory/${subcategoryID}`)
+    const response = await request(app).get(`/subcategories/${subcategoryID}`)
 
     expect(response.status).toBe(500)
     expect(response.body).toHaveProperty('message', expect.any(String))
   })
 })
 
-describe('[PUT] - /subcategory/:subcategoryID', () => {
+describe('[PUT] - /subcategories/:subcategoryID', () => {
   const requestBody = {
     name: 'subcategory 1 UPDATED',
     description: 'Description of subcategory 1 UPDATED',
@@ -201,7 +181,7 @@ describe('[PUT] - /subcategory/:subcategoryID', () => {
 
   it('should return 200 and update a single product', async () => {
     const response = await request(app)
-      .put(`/subcategory/${subcategoryID}`)
+      .put(`/subcategories/${subcategoryID}`)
       .send(requestBody)
 
     expect(response.status).toBe(200)
@@ -222,7 +202,7 @@ describe('[PUT] - /subcategory/:subcategoryID', () => {
 
   it('should return 400 when invalid request body', async () => {
     const response = await request(app)
-      .put(`/subcategory/${subcategoryID}`)
+      .put(`/subcategories/${subcategoryID}`)
       .send({
         any_value: 'invalid_value',
       })
@@ -233,7 +213,7 @@ describe('[PUT] - /subcategory/:subcategoryID', () => {
 
   it('should return 404 when subcategory does not exist', async () => {
     const response = await request(app)
-      .put('/subcategory/54ad1e07-e4a3-4b34-a1e3-a07313901480')
+      .put('/subcategories/54ad1e07-e4a3-4b34-a1e3-a07313901480')
       .send(requestBody)
 
     expect(response.status).toBe(404)
@@ -242,7 +222,7 @@ describe('[PUT] - /subcategory/:subcategoryID', () => {
 
   it('should return 409 when subcategory name already exists', async () => {
     const response = await request(app)
-      .put(`/subcategory/${subcategoryID}`)
+      .put(`/subcategories/${subcategoryID}`)
       .send({
         ...requestBody,
         name: 'Subcategory 2',
@@ -258,7 +238,7 @@ describe('[PUT] - /subcategory/:subcategoryID', () => {
     })
 
     const response = await request(app)
-      .put(`/subcategory/${subcategoryID}`)
+      .put(`/subcategories/${subcategoryID}`)
       .send({
         ...requestBody,
         name: 'subcategory 1 UPDATED 2',
@@ -269,11 +249,13 @@ describe('[PUT] - /subcategory/:subcategoryID', () => {
   })
 })
 
-describe('[DELETE] - /subcategory/:subcategoryID', () => {
+describe('[DELETE] - /subcategories/:subcategoryID', () => {
   const subcategoryID = '54ad1e07-e4a3-4b34-a1e3-a07313901487'
 
   it('should return 204 and delete a single subcategory', async () => {
-    const response = await request(app).delete(`/subcategory/${subcategoryID}`)
+    const response = await request(app).delete(
+      `/subcategories/${subcategoryID}`,
+    )
 
     expect(response.status).toBe(204)
   })
@@ -281,7 +263,7 @@ describe('[DELETE] - /subcategory/:subcategoryID', () => {
   it('should return 400 when invalid param', async () => {
     const value = 'invalid_value'
 
-    const response = await request(app).delete(`/subcategory/${value}`)
+    const response = await request(app).delete(`/subcategories/${value}`)
 
     expect(response.status).toBe(400)
     expect(response.body).toHaveProperty('message', expect.any(String))
@@ -289,7 +271,7 @@ describe('[DELETE] - /subcategory/:subcategoryID', () => {
 
   it('should return 404 when subcategory does not exist', async () => {
     const response = await request(app).delete(
-      '/subcategory/54ad1e07-e4a3-4b34-a1e3-a07313901487',
+      '/subcategories/3c633019-d6a1-4772-ba19-15905026be9b',
     )
 
     expect(response.status).toBe(404)
@@ -302,7 +284,7 @@ describe('[DELETE] - /subcategory/:subcategoryID', () => {
     })
 
     const response = await request(app).delete(
-      '/subcategory/3c632086-d6a1-4772-ba19-15905026be9b',
+      '/subcategories/3c632086-d6a1-4772-ba19-15905026be9b',
     )
 
     expect(response.status).toBe(500)

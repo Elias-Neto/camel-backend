@@ -23,6 +23,12 @@ const HttpStatus = {
     statusCode: 500,
     message: 'Ocorreu um erro inesperado',
   },
+  categories: {
+    409: {
+      statusCode: 409,
+      message: 'Já existe uma categoria com esse nome.',
+    },
+  },
 }
 
 export default HttpStatus

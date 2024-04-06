@@ -10,6 +10,11 @@ import {
   fetchImageByRelatedId,
 } from '../images/images.dao.js'
 
+import {
+  deleteImageByRelatedId,
+  fetchImageByRelatedId,
+} from '../images/images.dao.js'
+
 import AppError from '../../utils/AppError.js'
 import HttpStatus from '../../types/global.enums.js'
 import imageTypes from '../images/image.type.js'

@@ -18,8 +18,7 @@ const paramsBaseSchema = {
 const validateCreateSubcategorySchema = celebrate({
   [Segments.BODY]: {
     name: Joi.string().required(),
-    description: Joi.string().optional(),
-    type: Joi.string().required(),
+    category_id: Joi.string().required(),
   },
 })
 
@@ -27,8 +26,7 @@ const validateFetchSubcategoriesSchema = celebrate({
   [Segments.QUERY]: {
     ...paginationBaseSchema,
     name: Joi.string().optional(),
-    description: Joi.string().optional(),
-    type: Joi.boolean().optional(),
+    category_id: Joi.string().optional(),
   },
 })
 
@@ -39,9 +37,7 @@ const validateFetchSubcategorySchema = celebrate({
 const validateEditSubcategorySchema = celebrate({
   [Segments.PARAMS]: paramsBaseSchema,
   [Segments.BODY]: {
-    name: Joi.string().optional(),
-    description: Joi.string().optional(),
-    type: Joi.string().optional(),
+    name: Joi.string().required(),
   },
 })
 
@@ -54,6 +50,7 @@ const validateUniqueSubcategory = async (request, _response, next) => {
     body: { name },
   } = request
 
+  console.log('teste', name)
   if (isDefined(name)) {
     const subcategory = await findSubcategoryByName(name)
 
@@ -85,11 +82,11 @@ const validateSubcategoryExistence = async (request, _response, next) => {
 const validateSubcategoriesExistence = async (request, _response, next) => {
   const { body } = request
 
-  const subcategoryIDs = body.subcategories.map(subcategory => subcategory.id)
+  const subcategoriesID = body.subcategories.map(subcategory => subcategory.id)
 
-  const subcategoriesFound = await findSubcategoriesByIDs(subcategoryIDs)
+  const subcategoriesFound = await findSubcategoriesByIDs(subcategoriesID)
 
-  if (subcategoriesFound.length !== subcategoryIDs.length) {
+  if (subcategoriesFound.length !== subcategoriesID.length) {
     throw new AppError(HttpStatus[404].statusCode, HttpStatus[404].message)
   }
 

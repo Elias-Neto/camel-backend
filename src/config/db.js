@@ -6,7 +6,8 @@ import usersModel from '../api/users/users.model.js'
 import ordersModel from '../api/orders/orders.model.js'
 import productsModel from '../api/products/products.model.js'
 import ordersProductModel from '../api/order-product/order-product.model.js'
-
+import subcategoryModel from '../api/subcategory/subcategory.model.js'
+import categoryModel from '../api/categories/categories.model.js'
 // RELATIONSHIPS
 
 // Onde User has MANY Orders AND One Order has ONE User
@@ -35,10 +36,23 @@ ordersProductModel.belongsToMany(ordersModel, {
   onDelete: 'CASCADE',
 })
 
+//One category has MANY subCategories And One subcategory has ONE category
+categoryModel.hasMany(subcategoryModel, {
+  foreignKey: 'category_id',
+  onUpdate: 'CASCADE',
+  onDelete: 'CASCADE',
+})
+subcategoryModel.belongsTo(categoryModel, {
+  foreignKey: 'category_id',
+  onUpdate: 'CASCADE',
+  onDelete: 'CASCADE',
+})
+
 async function connectToDatabase() {
   try {
     sequelize.authenticate()
     sequelize.sync()
+    // sequelize.sync({ force: true })
     // eslint-disable-next-line
     console.log('✅ Database connected!')
   } catch (error) {

@@ -20,11 +20,11 @@ const createSubcategory = async (request, response) => {
       throw response.status(error.statusCode).json({
         message: error.message,
       })
+    } else {
+      throw response.status(HttpStatus[500].statusCode).json({
+        message: HttpStatus[500].message,
+      })
     }
-
-    throw response.status(HttpStatus[500].statusCode).json({
-      message: HttpStatus[500].message,
-    })
   }
 }
 

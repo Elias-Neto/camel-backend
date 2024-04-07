@@ -20,8 +20,7 @@ describe('[POST] - /subcategories', () => {
   it('should return 201 and create a new subcategory', async () => {
     const response = await request(app).post('/subcategories').send({
       name: 'Subcategory Test 1',
-      description: 'Bom Demais',
-      type: 'maravilha',
+      category_id: '2d9ea264-6c46-4fb7-8d2d-e75e72146317',
     })
 
     expect(response.status).toBe(201)

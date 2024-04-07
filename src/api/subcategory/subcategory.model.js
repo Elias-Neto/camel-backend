@@ -13,14 +13,13 @@ const subcategoryModel = sequelize.define('subcategory', {
     required: true,
     allowNull: false,
   },
-  description: {
-    type: DataTypes.STRING,
-    allowNull: true,
-  },
-  type: {
-    type: DataTypes.STRING(50),
-    required: true,
+  category_id: {
+    type: DataTypes.UUID,
     allowNull: false,
+    references: {
+      model: 'categories',
+      key: 'id',
+    },
   },
 })
 

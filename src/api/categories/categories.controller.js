@@ -1,3 +1,6 @@
+import AppError from '../../utils/AppError.js'
+import HttpStatus from '../../types/global.enums.js'
+
 import {
   insertCategory,
   updateCategory,
@@ -6,8 +9,7 @@ import {
   findCategoryByID,
 } from './categories.dao.js'
 
-import AppError from '../../utils/AppError.js'
-import HttpStatus from '../../types/global.enums.js'
+import { findImageByCategoryID } from '../images/categories/images-categories.dao.js'
 
 const createCategory = async (request, response) => {
   const { body } = request
@@ -33,11 +35,19 @@ const fetchCategories = async (request, response) => {
   const { query } = request
 
   try {
-    const { data, count } = await findAndCountCategories(query)
+    const { data: categories, count } = await findAndCountCategories(query)
+
+    const categoriesWithImage = await Promise.all(
+      categories.map(async category => {
+        const images = await findImageByCategoryID(category.id)
+        category.dataValues.images = images
+        return category
+      }),
+    )
 
     response.set('x-count', count)
 
-    response.status(200).json(data)
+    response.status(200).json(categoriesWithImage)
   } catch (error) {
     if (error instanceof AppError) {
       throw response.status(error.statusCode).json({
@@ -56,6 +66,9 @@ const fetchCategory = async (request, response) => {
 
   try {
     const { category } = locals
+    const images = await findImageByCategoryID(category.id)
+
+    category.dataValues.images = images
 
     response.status(200).json(category)
   } catch (error) {

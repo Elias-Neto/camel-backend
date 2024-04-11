@@ -1,4 +1,4 @@
-import imagesCategoryModel from './images-categories.model'
+import imagesCategoryModel from './images-categories.model.js'
 
 const findImageByCategoryID = async categoryID => {
   const images = await imagesCategoryModel.findAll({

@@ -1,4 +1,4 @@
-import imagesProductsModel from './images-products.model'
+import imagesProductsModel from './images-products.model.js'
 
 const findImageByProductID = async productID => {
   const images = await imagesProductsModel.findAll({

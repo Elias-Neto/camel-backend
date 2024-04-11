@@ -9,7 +9,7 @@ const imagesCategoriesModel = sequelize.define('images-categories', {
     primaryKey: true,
   },
   src: {
-    type: DataTypes.STRING,
+    type: DataTypes.TEXT,
     required: true,
     allowNull: false,
   },

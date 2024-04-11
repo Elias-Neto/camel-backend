@@ -2,6 +2,8 @@ import { DataTypes } from 'sequelize'
 
 import sequelize from '../../config/sequelize.js'
 
+import imagesModel from '../images/images.model.js'
+
 const productsModel = sequelize.define('products', {
   id: {
     type: DataTypes.UUID,
@@ -30,6 +32,15 @@ const productsModel = sequelize.define('products', {
     allowNull: false,
     defaultValue: true,
   },
+})
+
+productsModel.hasMany(imagesModel, {
+  foreignKey: 'product_id',
+  onDelete: 'CASCADE',
+})
+imagesModel.belongsTo(productsModel, {
+  foreignKey: 'product_id',
+  onDelete: 'CASCADE',
 })
 
 export default productsModel

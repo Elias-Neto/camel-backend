@@ -9,7 +9,7 @@ const imagesProductsModel = sequelize.define('images-products', {
     primaryKey: true,
   },
   src: {
-    type: DataTypes.STRING,
+    type: DataTypes.TEXT,
     required: true,
     allowNull: false,
   },

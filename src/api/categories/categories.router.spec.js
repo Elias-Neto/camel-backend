@@ -9,12 +9,52 @@ import { loadSeedData } from '../../../test/utils/index.js'
 beforeAll(async () => {
   await sequelize.sync({ force: true }) // Cria as tabelas no banco de dados de teste
   await loadSeedData('categories')
+  await loadSeedData('images-categories')
 })
 
 afterAll(async () => {
   await sequelize.drop() // Apaga as tabelas no banco de dados de teste
   await sequelize.close() // Fecha a conexão com o banco de dados de teste
 })
+
+const validateCategorySchema = category => {
+  expect(category).toHaveProperty('createdAt')
+  expect(category).toHaveProperty('deletedAt')
+  expect(category).toHaveProperty('updatedAt')
+  expect(category).toHaveProperty('id')
+  expect(category).toHaveProperty('name')
+  expect(category).toHaveProperty('images')
+
+  expect(category).toMatchObject({
+    createdAt: expect.any(String),
+    updatedAt: expect.any(String),
+    deletedAt: null,
+    id: expect.any(String),
+    name: expect.any(String),
+    ...(category.images.length && {
+      images: expect.arrayContaining([
+        expect.objectContaining({
+          id: expect.any(String),
+          src: expect.any(String),
+          ...(!!category.images.category_id && {
+            category_id: expect.any(String),
+          }),
+          createdAt: expect.any(String),
+          updatedAt: expect.any(String),
+          deletedAt: null,
+        }),
+      ]),
+    }),
+  })
+}
+
+const validateFetchCategories = (response, headerCount, bodyLength) => {
+  expect(response.header).toHaveProperty('x-count')
+  expect(response.header['x-count']).toBe(headerCount.toString())
+  expect(response.body.length).toBe(bodyLength)
+
+  response.body.forEach(validateCategorySchema)
+}
 
 describe.skip('[POST] - /categories', () => {
   it('should return 201 and create a new category', async () => {
@@ -97,7 +137,7 @@ describe('[GET] - /categories', () => {
     const response = await request(app).get('/categories')
 
     expect(response.status).toBe(200)
-    expect(Number(response.headers['x-count'])).toBe(4)
+    validateFetchCategories(response, 4, 4)
   })
 
   it('should return 200 with pagination query params and a categories list', async () => {
@@ -109,8 +149,7 @@ describe('[GET] - /categories', () => {
     })
 
     expect(response.status).toBe(200)
-    expect(Number(response.headers['x-count'])).toBe(queryParams.limit)
-    expect(response.body.length).toBe(queryParams.limit)
+    validateFetchCategories(response, 4, 2)
     expect(response.body[0].name).toBe('parafuso 1')
     expect(response.body[1].name).toBe('parafuso 2')
   })
@@ -121,7 +160,7 @@ describe('[GET] - /categories', () => {
     })
 
     expect(response.status).toBe(200)
-    expect(Number(response.headers['x-count'])).toBe(1)
+    validateFetchCategories(response, 1, 1)
     expect(response.body[0].name).toBe('lanterna')
   })
 
@@ -131,7 +170,7 @@ describe('[GET] - /categories', () => {
     })
 
     expect(response.status).toBe(200)
-    expect(Number(response.headers['x-count'])).toBe(1)
+    validateFetchCategories(response, 1, 1)
   })
 
   it('should return 400 when invalid request query params', async () => {
@@ -162,7 +201,7 @@ describe('[GET] - /categories/:categoryID', () => {
     const response = await request(app).get(`/categories/${categoryID}`)
 
     expect(response.status).toBe(200)
-
+    validateCategorySchema(response.body)
     expect(response.body.id).toBe(categoryID)
   })
 

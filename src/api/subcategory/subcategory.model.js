@@ -13,14 +13,6 @@ const subcategoryModel = sequelize.define('subcategory', {
     required: true,
     allowNull: false,
   },
-  category_id: {
-    type: DataTypes.UUID,
-    allowNull: false,
-    references: {
-      model: 'categories',
-      key: 'id',
-    },
-  },
 })
 
 export default subcategoryModel

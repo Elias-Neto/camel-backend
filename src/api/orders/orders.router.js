@@ -1,7 +1,11 @@
 import { Router } from 'express'
 
-import { createOrder } from './orders.controller.js'
-import { validateCreateOrderSchema } from './orders.middleware.js'
+import { createOrder, fetchOrder } from './orders.controller.js'
+import {
+  validateCreateOrderSchema,
+  validateFetchOrdersSchema,
+  validateOrdersExistence,
+} from './orders.middleware.js'
 import { validateUserExistence } from '../users/users.middleware.js'
 import { validateProductsExistence } from '../products/products.middleware.js'
 
@@ -12,6 +16,12 @@ router.post('/', [
   validateUserExistence,
   validateProductsExistence,
   createOrder,
+])
+
+router.get('/:orderID', [
+  validateFetchOrdersSchema,
+  validateOrdersExistence,
+  fetchOrder,
 ])
 
 export default router

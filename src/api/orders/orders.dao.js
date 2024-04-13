@@ -56,4 +56,4 @@ const insertOrder = async data => {
   return await findOrderByID(createdOrder.id)
 }
 
-export { insertOrder }
+export { insertOrder, findOrderByID }

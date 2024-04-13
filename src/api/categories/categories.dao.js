@@ -4,8 +4,6 @@ import { Sequelize } from 'sequelize'
 import { isDefined } from '../../helpers/object-helper.js'
 import { searchAttributeString } from '../../helpers/query-helper.js'
 import subcategoryModel from '../subcategory/subcategory.model.js'
-import productsModel from '../products/products.model.js'
-import imagesProductsModel from '../images/products/images-products.model.js'
 
 const insertCategory = async data => {
   return await categoryModel.create(data)
@@ -38,6 +36,15 @@ const findAndCountCategories = async params => {
       ...(isDefined(name) && { name: searchAttributeString(name) }),
       ...(isDefined(isBrand) && { isBrand }),
     },
+    include: [
+      {
+        model: subcategoryModel,
+        required: false,
+        where: {
+          deletedAt: null,
+        },
+      },
+    ],
     limit: parseInt(limit),
     offset: parseInt(offset),
     order: [[sortBy, sortOrder]],
@@ -57,15 +64,6 @@ const findCategoryByID = async categoryID => {
       id: categoryID,
       deletedAt: null,
     },
-  })
-}
-
-const findSubcategoriesByCategoryID = async categoryID => {
-  return await categoryModel.findAll({
-    where: {
-      id: categoryID,
-      deletedAt: null,
-    },
     include: [
       {
         model: subcategoryModel,
@@ -73,24 +71,6 @@ const findSubcategoriesByCategoryID = async categoryID => {
         where: {
           deletedAt: null,
         },
-        include: [
-          {
-            model: productsModel,
-            required: false,
-            where: {
-              deletedAt: null,
-            },
-            include: [
-              {
-                model: imagesProductsModel,
-                required: false,
-                where: {
-                  deletedAt: null,
-                },
-              },
-            ],
-          },
-        ],
       },
     ],
   })
@@ -121,5 +101,4 @@ export {
   findCategoryByName,
   deleteCategory,
   findAndCountCategories,
-  findSubcategoriesByCategoryID,
 }

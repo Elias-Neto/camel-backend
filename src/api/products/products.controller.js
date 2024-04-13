@@ -1,3 +1,6 @@
+import AppError from '../../utils/AppError.js'
+import HttpStatus from '../../types/global.enums.js'
+
 import {
   insertProduct,
   findAndCountProducts,
@@ -5,8 +8,7 @@ import {
   deleteProduct,
 } from './products.dao.js'
 
-import AppError from '../../utils/AppError.js'
-import HttpStatus from '../../types/global.enums.js'
+import { findImageByProductID } from '../images/products/images-products.dao.js'
 
 const createProduct = async (request, response) => {
   const { body } = request
@@ -32,11 +34,19 @@ const fetchProducts = async (request, response) => {
   const { query } = request
 
   try {
-    const { data, count } = await findAndCountProducts(query)
+    let { data: products, count } = await findAndCountProducts(query)
+
+    const productsWithImage = await Promise.all(
+      products.map(async product => {
+        const images = await findImageByProductID(product.id)
+        product.dataValues.images = images
+        return product
+      }),
+    )
 
     response.set('x-count', count)
 
-    response.status(200).json(data)
+    response.status(200).json(productsWithImage)
   } catch (error) {
     if (error instanceof AppError) {
       throw response.status(error.statusCode).json({
@@ -55,6 +65,9 @@ const fetchProduct = async (request, response) => {
 
   try {
     const { product } = locals
+    const images = await findImageByProductID(product.id)
+
+    product.dataValues.images = images
 
     response.status(200).json(product)
   } catch (error) {

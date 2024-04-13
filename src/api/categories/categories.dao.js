@@ -44,7 +44,7 @@ const findAndCountCategories = async params => {
   const result = await categoryModel.findAndCountAll(options)
 
   return {
-    count: result.rows.length,
+    count: result.count,
     data: result.rows,
   }
 }

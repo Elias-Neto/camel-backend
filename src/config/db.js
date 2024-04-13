@@ -41,7 +41,6 @@ ordersProductModel.belongsToMany(ordersModel, {
   onDelete: 'CASCADE',
 })
 
-
 //One category has MANY subCategories And One subcategory has ONE category
 categoryModel.hasMany(subcategoryModel, {
   foreignKey: 'category_id',

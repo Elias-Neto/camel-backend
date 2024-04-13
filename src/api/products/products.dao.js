@@ -10,8 +10,17 @@ const insertProduct = async data => {
 }
 
 const findAndCountProducts = async params => {
-  const { limit, offset, sortBy, sortOrder, search, name, price, available } =
-    params
+  const {
+    limit,
+    offset,
+    sortBy,
+    sortOrder,
+    search,
+    name,
+    price,
+    available,
+    subcategoryID,
+  } = params
 
   const options = {
     where: {
@@ -33,6 +42,7 @@ const findAndCountProducts = async params => {
       ...(isDefined(name) && { name: searchAttributeString(name) }),
       ...(isDefined(price) && { price: searchAttributeString(price) }),
       ...(isDefined(available) && { available }),
+      ...(isDefined(subcategoryID) && { subcategory_id: subcategoryID }),
     },
     limit: parseInt(limit),
     offset: parseInt(offset),

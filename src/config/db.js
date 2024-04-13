@@ -95,8 +95,8 @@ async function connectToDatabase() {
   try {
     sequelize.authenticate()
 
-    sequelize.sync()
-    // sequelize.sync({ force: true })
+    // sequelize.sync()
+    sequelize.sync({ force: true })
 
     // eslint-disable-next-line
     console.log('✅ Database connected!')

@@ -2,7 +2,7 @@ import { DataTypes } from 'sequelize'
 
 import sequelize from '../../../config/sequelize.js'
 
-const imagesCategoriesModel = sequelize.define('images-categories', {
+const imagesCategoriesModel = sequelize.define('images_categories', {
   id: {
     type: DataTypes.UUID,
     defaultValue: DataTypes.UUIDV4,

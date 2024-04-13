@@ -50,7 +50,6 @@ const validateUniqueSubcategory = async (request, _response, next) => {
     body: { name },
   } = request
 
-  console.log('teste', name)
   if (isDefined(name)) {
     const subcategory = await findSubcategoryByName(name)
 

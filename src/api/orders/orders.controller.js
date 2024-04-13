@@ -6,6 +6,24 @@ import HttpStatus from '../../types/global.enums.js'
 
 import { mapOrder } from './orders.helper.js'
 
+const fetchOrder = async (request, response) => {
+  const { locals } = request
+
+  try {
+    response.status(200).json(locals)
+  } catch (error) {
+    if (error instanceof AppError) {
+      throw response.status(error.statusCode).json({
+        message: error.message,
+      })
+    }
+
+    throw response.status(HttpStatus[500].statusCode).json({
+      message: HttpStatus[500].message,
+    })
+  }
+}
+
 const createOrder = async (request, response) => {
   const { body } = request
 
@@ -28,4 +46,4 @@ const createOrder = async (request, response) => {
   }
 }
 
-export { createOrder }
+export { createOrder, fetchOrder }

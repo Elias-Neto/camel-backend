@@ -9,7 +9,6 @@ import ordersModel from '../api/orders/orders.model.js'
 import ordersProductModel from '../api/order-product/order-product.model.js'
 
 import subcategoryModel from '../api/subcategory/subcategory.model.js'
-import categoryModel from '../api/categories/categories.model.js'
 
 import productsModel from '../api/products/products.model.js'
 import usersModel from '../api/users/users.model.js'

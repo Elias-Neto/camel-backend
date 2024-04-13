@@ -1,10 +1,6 @@
 import { celebrate, Joi, Segments } from 'celebrate'
 
-import {
-  findCategoryByID,
-  findCategoryByName,
-  findSubcategoriesByCategoryID,
-} from './categories.dao.js'
+import { findCategoryByID, findCategoryByName } from './categories.dao.js'
 
 import AppError from '../../utils/AppError.js'
 import HttpStatus from '../../types/global.enums.js'
@@ -100,26 +96,6 @@ const validateCategoryExistence = async (request, _response, next) => {
   next()
 }
 
-const validateSubcategoryOfCategoryExistence = async (
-  request,
-  _response,
-  next,
-) => {
-  const { query, params, body } = request
-
-  const categoryID = params.categoryID || query.categoryID || body.categoryID
-
-  const category = await findSubcategoriesByCategoryID(categoryID)
-
-  if (isNullOrUndefined(category)) {
-    throw new AppError(HttpStatus[404].statusCode, HttpStatus[404].message)
-  }
-
-  request.locals.category = category
-
-  next()
-}
-
 export {
   validateCreateCategorySchema,
   validateUniqueCategory,
@@ -129,5 +105,4 @@ export {
   validateUniqueCategoryPUT,
   validateFetchCategoriesSchema,
   validateFetchCategorySchema,
-  validateSubcategoryOfCategoryExistence,
 }

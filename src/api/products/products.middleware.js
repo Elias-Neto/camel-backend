@@ -21,7 +21,7 @@ const validateCreateProductSchema = celebrate({
     description: Joi.string().required(),
     price: Joi.string().required(),
     available: Joi.boolean().optional(),
-    subcategory_id: Joi.string().uuid().optional(),
+    subcategoryID: Joi.string().uuid().optional(),
   },
 })
 
@@ -31,6 +31,7 @@ const validateFetchProductsSchema = celebrate({
     name: Joi.string().optional(),
     price: Joi.string().optional(),
     available: Joi.boolean().optional(),
+    subcategoryID: Joi.string().uuid().optional(),
   },
 })
 

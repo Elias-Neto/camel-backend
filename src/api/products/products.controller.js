@@ -14,7 +14,10 @@ const createProduct = async (request, response) => {
   const { body } = request
 
   try {
-    const user = await insertProduct(body)
+    const user = await insertProduct({
+      ...body,
+      subcategory_id: body.subcategoryID,
+    })
 
     return response.status(201).json(user)
   } catch (error) {

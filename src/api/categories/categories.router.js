@@ -6,6 +6,7 @@ import {
   fetchCategory,
   removeCategory,
   editCategory,
+  fetchSubcategoryOfACategory,
 } from './categories.controller.js'
 
 import {
@@ -16,6 +17,7 @@ import {
   validateUpdateCategorySchema,
   validateFetchCategoriesSchema,
   validateFetchCategorySchema,
+  validateSubcategoryOfCategoryExistence,
 } from './categories.middleware.js'
 
 const router = Router()
@@ -27,6 +29,12 @@ router.post('/', [
 ])
 
 router.get('/', [validateFetchCategoriesSchema, fetchCategories])
+
+router.get('/subcategory/:categoryID', [
+  validateFetchCategorySchema,
+  validateSubcategoryOfCategoryExistence,
+  fetchSubcategoryOfACategory,
+])
 
 router.get('/:categoryID', [
   validateFetchCategorySchema,

@@ -71,6 +71,26 @@ const fetchCategory = async (request, response) => {
   }
 }
 
+const fetchSubcategoryOfACategory = async (request, response) => {
+  const { locals } = request
+
+  try {
+    const { category } = locals
+
+    response.status(200).json(category)
+  } catch (error) {
+    if (error instanceof AppError) {
+      throw response.status(error.statusCode).json({
+        message: error.message,
+      })
+    }
+
+    throw response.status(HttpStatus[500].statusCode).json({
+      message: HttpStatus[500].message,
+    })
+  }
+}
+
 const editCategory = async (request, response) => {
   const { params, body } = request
   try {
@@ -125,4 +145,5 @@ export {
   fetchCategory,
   editCategory,
   removeCategory,
+  fetchSubcategoryOfACategory,
 }

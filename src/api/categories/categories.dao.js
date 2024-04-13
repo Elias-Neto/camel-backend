@@ -3,6 +3,7 @@ import categoryModel from './categories.model.js'
 import { Sequelize } from 'sequelize'
 import { isDefined } from '../../helpers/object-helper.js'
 import { searchAttributeString } from '../../helpers/query-helper.js'
+import subcategoryModel from '../subcategory/subcategory.model.js'
 
 const insertCategory = async data => {
   return await categoryModel.create(data)
@@ -57,6 +58,24 @@ const findCategoryByID = async categoryID => {
   })
 }
 
+const findSubcategoriesByCategoryID = async categoryID => {
+  return await categoryModel.findAll({
+    where: {
+      id: categoryID,
+      deletedAt: null,
+    },
+    include: [
+      {
+        model: subcategoryModel,
+        required: false,
+        where: {
+          deletedAt: null,
+        },
+      },
+    ],
+  })
+}
+
 const findCategoryByName = async name => {
   return await categoryModel.findOne({
     where: {
@@ -82,4 +101,5 @@ export {
   findCategoryByName,
   deleteCategory,
   findAndCountCategories,
+  findSubcategoriesByCategoryID,
 }

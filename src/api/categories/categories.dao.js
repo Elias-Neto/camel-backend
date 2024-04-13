@@ -4,6 +4,8 @@ import { Sequelize } from 'sequelize'
 import { isDefined } from '../../helpers/object-helper.js'
 import { searchAttributeString } from '../../helpers/query-helper.js'
 import subcategoryModel from '../subcategory/subcategory.model.js'
+import productsModel from '../products/products.model.js'
+import imagesProductsModel from '../images/products/images-products.model.js'
 
 const insertCategory = async data => {
   return await categoryModel.create(data)
@@ -71,6 +73,24 @@ const findSubcategoriesByCategoryID = async categoryID => {
         where: {
           deletedAt: null,
         },
+        include: [
+          {
+            model: productsModel,
+            required: false,
+            where: {
+              deletedAt: null,
+            },
+            include: [
+              {
+                model: imagesProductsModel,
+                required: false,
+                where: {
+                  deletedAt: null,
+                },
+              },
+            ],
+          },
+        ],
       },
     ],
   })

@@ -78,12 +78,25 @@ imagesCategories.belongsTo(categoryModel, {
   onDelete: 'CASCADE',
 })
 
+// One Subcategory has MANY Products AND one Product has ONE Subcategory
+subcategoryModel.hasMany(productsModel, {
+  foreignKey: 'subcategory_id',
+  onUpdate: 'CASCADE',
+  onDelete: 'CASCADE',
+})
+
+productsModel.belongsTo(subcategoryModel, {
+  foreignKey: 'subcategory_id',
+  onUpdate: 'CASCADE',
+  onDelete: 'CASCADE',
+})
+
 async function connectToDatabase() {
   try {
     sequelize.authenticate()
 
-    // sequelize.sync()
-    sequelize.sync({ force: true })
+    sequelize.sync()
+    // sequelize.sync({ force: true })
 
     // eslint-disable-next-line
     console.log('✅ Database connected!')

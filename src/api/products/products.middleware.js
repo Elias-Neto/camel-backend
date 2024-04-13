@@ -21,6 +21,7 @@ const validateCreateProductSchema = celebrate({
     description: Joi.string().required(),
     price: Joi.string().required(),
     available: Joi.boolean().optional(),
+    subcategory_id: Joi.string().uuid().optional(),
   },
 })
 

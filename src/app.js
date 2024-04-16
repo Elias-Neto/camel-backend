@@ -1,14 +1,16 @@
 import 'express-async-errors'
-
 import cors from 'cors'
 import morgan from 'morgan'
 import express from 'express'
+import swaggerUi from 'swagger-ui-express'
 
 import './config/dotenv.js'
 import './config/db.js'
 
 import routes from './api/index.js'
 import exceptionHandler from './middlewares/errors-handlers.js'
+
+import swaggerDocument from './docs/swagger.js'
 
 const app = express()
 
@@ -33,6 +35,9 @@ app.use((request, _response, next) => {
 
   next()
 })
+
+// Serve Swagger UI
+app.use('/swagger', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
 
 // Routes
 app.use(routes)

@@ -6,6 +6,10 @@ import HttpStatus from '../../types/global.enums.js'
 
 import { mapOrder } from './orders.helper.js'
 
+import { sendEmail } from '../../service/email.service.js'
+import { findUserByID } from '../users/users.dao.js'
+import { emailCreator } from '../../helpers/emailCreator.js'
+
 const fetchOrder = async (request, response) => {
   const { locals } = request
 
@@ -29,8 +33,13 @@ const createOrder = async (request, response) => {
 
   try {
     const orderMapped = mapOrder(body)
-
     const order = await insertOrder(orderMapped)
+
+    const to = await findUserByID(body.userID).then(
+      response => response.dataValues.email,
+    )
+    const subject = `Confirmação do orçamento ${order.id}`
+    sendEmail(to, subject, emailCreator(order.products))
 
     return response.status(201).json(order)
   } catch (error) {

@@ -36,7 +36,7 @@ const validateUpdateCategorySchema = celebrate({
   [Segments.BODY]: {
     name: Joi.string(),
     description: Joi.string(),
-    type: Joi.string(),
+    isBrand: Joi.bool(),
   },
 })
 

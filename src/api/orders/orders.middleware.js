@@ -30,7 +30,7 @@ const validateOrdersExistence = async (request, _response, next) => {
 
   const order = await findOrderByID(orderID)
 
-  if (isNullOrUndefined(order)) {
+  if (isNullOrUndefined(order) || order.products.length === 0) {
     throw new AppError(HttpStatus[404].statusCode, HttpStatus[404].message)
   }
 

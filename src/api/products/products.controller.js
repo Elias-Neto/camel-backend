@@ -6,9 +6,12 @@ import {
   findAndCountProducts,
   updateProduct,
   deleteProduct,
+  findProductsByIDs,
 } from './products.dao.js'
 
 import { findImageByProductID } from '../images/products/images-products.dao.js'
+
+import { getRecommendProductIDs } from './products.helper.js'
 
 const createProduct = async (request, response) => {
   const { body } = request
@@ -48,6 +51,40 @@ const fetchProducts = async (request, response) => {
     )
 
     response.set('x-count', count)
+
+    response.status(200).json(productsWithImage)
+  } catch (error) {
+    if (error instanceof AppError) {
+      throw response.status(error.statusCode).json({
+        message: error.message,
+      })
+    }
+
+    throw response.status(HttpStatus[500].statusCode).json({
+      message: HttpStatus[500].message,
+    })
+  }
+}
+
+const fetchProductRecommendations = async (request, response) => {
+  const {
+    params: { productID },
+  } = request
+
+  try {
+    const recommendProductIDs = getRecommendProductIDs(productID)
+
+    const products = await findProductsByIDs(recommendProductIDs)
+
+    const productsWithImage = await Promise.all(
+      products.map(async product => {
+        const images = await findImageByProductID(product.id)
+        product.dataValues.images = images
+        return product
+      }),
+    )
+
+    response.set('x-count', products.length)
 
     response.status(200).json(productsWithImage)
   } catch (error) {
@@ -135,4 +172,5 @@ export {
   fetchProduct,
   editProduct,
   removeProduct,
+  fetchProductRecommendations,
 }

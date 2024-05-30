@@ -37,7 +37,7 @@ const findOrderByID = async orderID => {
     productsRelationships,
   )
 
-  return { ...order.dataValues, products: mappedRelatedProducts }
+  return { ...order?.dataValues, products: mappedRelatedProducts }
 }
 
 const insertOrder = async data => {

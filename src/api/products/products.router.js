@@ -6,6 +6,7 @@ import {
   fetchProduct,
   editProduct,
   removeProduct,
+  fetchProductRecommendations,
 } from './products.controller.js'
 import {
   validateCreateProductSchema,
@@ -15,6 +16,7 @@ import {
   validateRemoveProductSchema,
   validateUniqueProduct,
   validateProductExistence,
+  validateRecommendationProductSchema,
 } from './products.middleware.js'
 
 const router = Router()
@@ -44,6 +46,12 @@ router.delete('/:productID', [
   validateRemoveProductSchema,
   validateProductExistence,
   removeProduct,
+])
+
+router.get('/:productID/recommendations', [
+  validateRecommendationProductSchema,
+  validateProductExistence,
+  fetchProductRecommendations,
 ])
 
 export default router

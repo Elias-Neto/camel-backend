@@ -1099,6 +1099,179 @@ export default {
         },
       },
     },
+    '/products/{productID}/recommendations': {
+      get: {
+        summary: 'Obtém recomendações de produtos',
+        description:
+          'Retorna uma lista de recomendações de produtos com base no ID fornecido',
+        tags: ['Produtos'],
+        parameters: [
+          {
+            name: 'productID',
+            in: 'path',
+            required: true,
+            description: 'Código de identificação do produto',
+            schema: {
+              type: 'string',
+              format: 'uuid',
+            },
+            example: 'f6894cd4-71b1-454b-b5ad-207fa0da19b8',
+          },
+        ],
+        responses: {
+          200: {
+            description: 'Recomendações retornadas com sucesso',
+            content: {
+              'application/json': {
+                schema: {
+                  type: 'array',
+                  items: {
+                    type: 'object',
+                    properties: {
+                      id: {
+                        type: 'string',
+                        format: 'uuid',
+                        description: 'ID único do produto',
+                      },
+                      name: {
+                        type: 'string',
+                        description: 'Nome do produto',
+                      },
+                      price: {
+                        type: 'string',
+                        description: 'Preço do produto',
+                      },
+                      description: {
+                        type: 'string',
+                        description: 'Descrição do produto',
+                      },
+                      available: {
+                        type: 'boolean',
+                        description: 'Disponibilidade do produto',
+                      },
+                      createdAt: {
+                        type: 'string',
+                        format: 'date-time',
+                        description: 'Data e hora de criação do produto',
+                      },
+                      updatedAt: {
+                        type: 'string',
+                        format: 'date-time',
+                        description:
+                          'Data e hora da última atualização do produto',
+                      },
+                      deletedAt: {
+                        type: ['string', 'null'],
+                        format: 'date-time',
+                        description:
+                          'Data e hora de exclusão do produto (se aplicável)',
+                      },
+                      subcategory_id: {
+                        type: 'string',
+                        format: 'uuid',
+                        description: 'ID da subcategoria do produto',
+                      },
+                      images: {
+                        type: 'array',
+                        description: 'Array de imagens associadas ao produto',
+                        items: {
+                          type: 'object',
+                          properties: {
+                            id: {
+                              type: 'string',
+                              format: 'uuid',
+                              description: 'ID único da imagem',
+                            },
+                            src: {
+                              type: 'string',
+                              format: 'uri',
+                              description: 'URL da imagem',
+                            },
+                            createdAt: {
+                              type: 'string',
+                              format: 'date-time',
+                              description: 'Data e hora de criação da imagem',
+                            },
+                            updatedAt: {
+                              type: 'string',
+                              format: 'date-time',
+                              description:
+                                'Data e hora da última atualização da imagem',
+                            },
+                            deletedAt: {
+                              type: ['string', 'null'],
+                              format: 'date-time',
+                              description:
+                                'Data e hora de exclusão da imagem (se aplicável)',
+                            },
+                            product_id: {
+                              type: 'string',
+                              format: 'uuid',
+                              description: 'ID do produto associado à imagem',
+                            },
+                          },
+                          required: [
+                            'id',
+                            'src',
+                            'createdAt',
+                            'updatedAt',
+                            'product_id',
+                          ],
+                        },
+                      },
+                    },
+                    required: [
+                      'id',
+                      'name',
+                      'price',
+                      'description',
+                      'available',
+                      'createdAt',
+                      'updatedAt',
+                      'subcategory_id',
+                      'images',
+                    ],
+                  },
+                },
+                example: [
+                  {
+                    id: 'f6894cd4-71b1-454b-b5ad-207fa0da19b8',
+                    name: 'Intelligent Wooden Pants',
+                    price: '181.00',
+                    description:
+                      'The Nagasaki Lander is the trademarked name of several series of Nagasaki sport bikes, that started with the 1984 ABC800J',
+                    available: true,
+                    createdAt: '2040-03-17T01:06:05.170Z',
+                    updatedAt: '2024-05-30T00:22:23.853Z',
+                    deletedAt: null,
+                    subcategory_id: 'f3e8cd2e-f640-4949-a43f-a337adbe3d91',
+                    images: [
+                      {
+                        id: '0518c433-477a-4a7b-b8b6-f718d7335752',
+                        src: 'https://loremflickr.com/640/480',
+                        createdAt: '2092-03-09T18:40:54.977Z',
+                        updatedAt: '2049-07-18T14:49:02.052Z',
+                        deletedAt: null,
+                        product_id: 'f6894cd4-71b1-454b-b5ad-207fa0da19b8',
+                      },
+                    ],
+                  },
+                ],
+              },
+            },
+          },
+          400: {
+            description: 'ID do produto inválido',
+          },
+          404: {
+            description: 'Produto não encontrado',
+          },
+          500: {
+            description: 'Erro interno do servidor',
+          },
+        },
+      },
+    },
     '/subcategories': {
       post: {
         summary: 'Criar uma nova subcategoria',
@@ -1633,6 +1806,95 @@ export default {
         responses: {
           201: {
             description: 'Pedido criado com sucesso',
+            content: {
+              'application/json': {
+                schema: {
+                  type: 'object',
+                  properties: {
+                    id: {
+                      type: 'string',
+                      example: '07265343-2f8d-43af-a81e-af7949aaaa1f',
+                    },
+                    total: {
+                      type: 'string',
+                      example: 'R$ 5.331,60',
+                    },
+                    createdAt: {
+                      type: 'string',
+                      format: 'date-time',
+                      example: '2024-05-25T03:50:14.733Z',
+                    },
+                    updatedAt: {
+                      type: 'string',
+                      format: 'date-time',
+                      example: '2024-05-25T03:50:14.733Z',
+                    },
+                    deletedAt: {
+                      type: 'string',
+                      format: 'date-time',
+                      nullable: true,
+                      example: null,
+                    },
+                    user_id: {
+                      type: 'string',
+                      example: '2c444d4e-551d-4ea8-91cc-98f0fc8179f5',
+                    },
+                    products: {
+                      type: 'array',
+                      items: {
+                        type: 'object',
+                        properties: {
+                          id: {
+                            type: 'string',
+                            example: '7defaa9f-46bd-45cf-ade7-44717e61ee7f',
+                          },
+                          name: {
+                            type: 'string',
+                            example: 'Inversor Solar Growatt 3 KW',
+                          },
+                          price: {
+                            type: 'string',
+                            example: '2392.00',
+                          },
+                          description: {
+                            type: 'string',
+                            example: 'Inversor Solar Growatt MIC 3000TL-X',
+                          },
+                          available: {
+                            type: 'boolean',
+                            example: true,
+                          },
+                          createdAt: {
+                            type: 'string',
+                            format: 'date-time',
+                            example: '2085-04-22T12:06:43.912Z',
+                          },
+                          updatedAt: {
+                            type: 'string',
+                            format: 'date-time',
+                            example: '2056-05-07T16:56:31.956Z',
+                          },
+                          deletedAt: {
+                            type: 'string',
+                            format: 'date-time',
+                            nullable: true,
+                            example: null,
+                          },
+                          subcategory_id: {
+                            type: 'string',
+                            example: '3a75c86e-03b3-4f99-a2e0-68b2fc8159b7',
+                          },
+                          quantity: {
+                            type: 'integer',
+                            example: 2,
+                          },
+                        },
+                      },
+                    },
+                  },
+                },
+              },
+            },
           },
           400: {
             description: 'Requisição inválida',
@@ -1665,6 +1927,95 @@ export default {
         responses: {
           200: {
             description: 'Ordem retornada com sucesso',
+            content: {
+              'application/json': {
+                schema: {
+                  type: 'object',
+                  properties: {
+                    id: {
+                      type: 'string',
+                      example: '07265343-2f8d-43af-a81e-af7949aaaa1f',
+                    },
+                    total: {
+                      type: 'string',
+                      example: 'R$ 5.331,60',
+                    },
+                    createdAt: {
+                      type: 'string',
+                      format: 'date-time',
+                      example: '2024-05-25T03:50:14.733Z',
+                    },
+                    updatedAt: {
+                      type: 'string',
+                      format: 'date-time',
+                      example: '2024-05-25T03:50:14.733Z',
+                    },
+                    deletedAt: {
+                      type: 'string',
+                      format: 'date-time',
+                      nullable: true,
+                      example: null,
+                    },
+                    user_id: {
+                      type: 'string',
+                      example: '2c444d4e-551d-4ea8-91cc-98f0fc8179f5',
+                    },
+                    products: {
+                      type: 'array',
+                      items: {
+                        type: 'object',
+                        properties: {
+                          id: {
+                            type: 'string',
+                            example: '7defaa9f-46bd-45cf-ade7-44717e61ee7f',
+                          },
+                          name: {
+                            type: 'string',
+                            example: 'Inversor Solar Growatt 3 KW',
+                          },
+                          price: {
+                            type: 'string',
+                            example: '2392.00',
+                          },
+                          description: {
+                            type: 'string',
+                            example: 'Inversor Solar Growatt MIC 3000TL-X',
+                          },
+                          available: {
+                            type: 'boolean',
+                            example: true,
+                          },
+                          createdAt: {
+                            type: 'string',
+                            format: 'date-time',
+                            example: '2085-04-22T12:06:43.912Z',
+                          },
+                          updatedAt: {
+                            type: 'string',
+                            format: 'date-time',
+                            example: '2056-05-07T16:56:31.956Z',
+                          },
+                          deletedAt: {
+                            type: 'string',
+                            format: 'date-time',
+                            nullable: true,
+                            example: null,
+                          },
+                          subcategory_id: {
+                            type: 'string',
+                            example: '3a75c86e-03b3-4f99-a2e0-68b2fc8159b7',
+                          },
+                          quantity: {
+                            type: 'integer',
+                            example: 2,
+                          },
+                        },
+                      },
+                    },
+                  },
+                },
+              },
+            },
           },
           400: {
             description: 'ID de Ordem inválido',

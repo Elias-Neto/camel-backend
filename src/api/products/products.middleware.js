@@ -39,6 +39,10 @@ const validateFetchProductSchema = celebrate({
   [Segments.PARAMS]: paramsBaseSchema,
 })
 
+const validateRecommendationProductSchema = celebrate({
+  [Segments.PARAMS]: paramsBaseSchema,
+})
+
 const validateEditProductSchema = celebrate({
   [Segments.PARAMS]: paramsBaseSchema,
   [Segments.BODY]: {
@@ -108,4 +112,5 @@ export {
   validateUniqueProduct,
   validateProductExistence,
   validateProductsExistence,
+  validateRecommendationProductSchema,
 }

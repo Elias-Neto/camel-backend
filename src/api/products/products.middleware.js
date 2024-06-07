@@ -41,6 +41,9 @@ const validateFetchProductSchema = celebrate({
 
 const validateRecommendationProductSchema = celebrate({
   [Segments.PARAMS]: paramsBaseSchema,
+  [Segments.QUERY]: {
+    type: Joi.string().valid('related', 'bought-together').required(),
+  },
 })
 
 const validateEditProductSchema = celebrate({

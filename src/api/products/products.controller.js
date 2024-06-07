@@ -69,10 +69,11 @@ const fetchProducts = async (request, response) => {
 const fetchProductRecommendations = async (request, response) => {
   const {
     params: { productID },
+    query: { type },
   } = request
 
   try {
-    const recommendProductIDs = getRecommendProductIDs(productID)
+    const recommendProductIDs = getRecommendProductIDs(productID, type)
 
     const products = await findProductsByIDs(recommendProductIDs)
 

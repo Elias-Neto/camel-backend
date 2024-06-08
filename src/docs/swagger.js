@@ -1117,6 +1117,17 @@ export default {
             },
             example: 'f6894cd4-71b1-454b-b5ad-207fa0da19b8',
           },
+          {
+            name: 'type',
+            in: 'query',
+            required: true,
+            description: 'Tipo de recomendações',
+            schema: {
+              type: 'string',
+              enum: ['bought-together', 'related'],
+            },
+            example: 'bought-together',
+          },
         ],
         responses: {
           200: {
